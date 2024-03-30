@@ -15,3 +15,5 @@ Imports:
     janitor,
     stringr,
     tibble
+URL: https://github.com/christopherjwilson/cobifnirs
+BugReports: https://github.com/christopherjwilson/cobifnirs/issues
