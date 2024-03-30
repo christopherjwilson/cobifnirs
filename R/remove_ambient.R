@@ -1,0 +1,15 @@
+#' @title Remove ambient light channel from NIRS data
+#' @description This function will remove the ambient light channel from the NIRS data. It is not required to do this, but it can make the data easier to work with.
+#' @param nirsData A dataframe containing NIRS data in a long format that has been imported using the import_nirs function.
+#' @import dplyr
+#' @export
+#' @examples
+#' nirsData <- import_nirs("path/to/nir/file.nir")
+#' nirsData <- remove_ambient(nirsData)
+
+
+remove_ambient <- function(nirsData) {
+
+  nirsData <- nirsData %>% dplyr::filter(freq != "ambient")
+  nirsData
+}
