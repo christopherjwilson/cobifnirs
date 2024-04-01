@@ -4,17 +4,44 @@
 \alias{add_markers}
 \title{add_markers}
 \usage{
-add_markers(nirsData)
+add_markers(nirsData, allowDuplicates = FALSE, removeDuplicates = FALSE)
 }
 \arguments{
 \item{nirsData}{A dataframe containing NIRS data in a long format that has been imported using the import_nirs function.}
+
+\item{allowDuplicates}{A logical value. If TRUE, the function will allow duplicate dataRow values in the marker file. Default is FALSE.}
+
+\item{removeDuplicates}{A logical value. If TRUE, the function will remove duplicate dataRow values in the marker file, retaining only the first marker value for that particular datapoint. Default is FALSE.}
 }
 \description{
-This function will add markers to the NIRS data. The data must be in a long format (imported using import_nirs) and markers must be in a separate file with the exact same name as the NIRS file (with .mrk extension).
+This function will add markers to the NIRS data. The data must be in a long format (imported using import_nirs) and markers must be in a separate file with the exact same name as the NIRS file (with .mrk extension). The returned data will have the markers added as a new column. If there are duplicate markers (i.e. more than one marker sent within a 500ms window), the function will either allow duplicates or remove them, depending on the parameters set.
 }
 \examples{
 # The location of the marker file will be read from the fileName column of the nirsData dataframe.
 # The marker file must have the same name as the NIRS file with a .mrk extension.
 nirsData <- import_nirs("path/to/nir/file.nir")
 nirsData <- add_markers(nirsData)
+
+# Let's assume there are duplicate values in the marker file.
+# This means 2 (or more) markers that have been sent within a 500ms window.
+# Because the default recording frequency is 2hz,
+# this means the both markers would be linked to the exact same datapoint (this is confusing!).
+
+
+# We have 2 options: allow the duplicates or remove them.
+# If we allow them, the output will have extra rows.
+# These will be exact duplicates of the rows that have the same dataRow value (i.e. the same timepoint) but with the additional markers.
+# You might want this, and it might cause no issues with your analysis.
+
+# To allow duplicates, set allowDuplicates = TRUE.
+nirsData <- add_markers(nirsData, allowDuplicates = TRUE)
+
+# If we remove the duplicates, we will retain only the first marker value for that particular datapoint.
+# This is will mean that only one of the markers will be linked to this exact datapoint.
+# This might be useful if you are only interested in the first marker that was sent, or if you sent additional markers accidentally.
+# The output will have the same number of rows as the input.
+
+#To remove duplicates, set removeDuplicates = TRUE.
+
+nirsData <- add_markers(nirsData, removeDuplicates = TRUE)
 }
