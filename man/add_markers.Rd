@@ -38,6 +38,10 @@ The allowDuplicates and removeDuplicates parameters allow you to choose how to h
 
 \dontrun{
 
+ # import the NIRS data
+
+ nirsData <- import_nirs("path/to/nirs/file.nir")
+
 # The location of the marker file will be read
 # from the fileName column of the nirsData dataframe.
 

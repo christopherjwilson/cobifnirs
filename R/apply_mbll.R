@@ -9,10 +9,20 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' data <- read_nirs_data("data.csv")
-#' data <- create_delta_ods(data, reference = "baseline")
-#' extMatrix <- create_ematrix(lambda1 = 730, lambda2 = 850, table= "wray")
-#' data <- apply_mbll(data, ematrix)
+#'
+#' # Import the NIRS data
+#'
+#' nirsData <- import_nirs("path/to/nirs/data.nir")
+#' # Create the delta ODs
+#' nirsData <- create_delta_ods(nirsData, reference = "baseline")
+#'
+#' # Create the extinction matrix
+#'
+#' extMatrix <- create_ext_matrix(lambda1 = 730, lambda2 = 850, table= "wray")
+#'
+#' # Apply the Modified Beer Lambert Law
+#'
+#' nirsData <- apply_mbll(data, extMatrix)
 #' }
 #' @seealso \code{\link{create_delta_ods}}, \code{\link{create_ext_matrix}}, \code{\link{import_nirs}}
 
