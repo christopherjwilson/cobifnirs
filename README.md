@@ -3,7 +3,7 @@ Cobi fNIRS
 
 For importing and working with fNIRS data from COBI Studio in R.
 
-## Current status
+## Current status (April 2024)
 
 This package is currently in development and is not yet ready for use.
 It is not recommended for installation at this time.
