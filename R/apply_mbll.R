@@ -1,17 +1,21 @@
 #' @title Apply the Modified Beer Lambert Law to the change in optical density data
 #' @description Applies the Modified Beer Lambert Law to the change in optical density data to calculate the change in concentration of oxygenated and deoxygenated hemoglobin.
-#' @param deltaOdData a data frame containing the delta od values for each channel. This should be in the format of the output from the function \code{\link{create_delta_ods}}.
-#' @param extMatrix a numeric matrix containing the extinction coefficients for each wavelength and chromophore. This should be in the format of the output from the function \code{\link{create_ematrix}}.
-#' @param pathLength a numeric value specifying the pathlength of the light through the tissue. This should be in cm. The default value is 2.5 cm.
-#' @param dpf a numeric value specifying the differential pathlength factor. The default value is 6.
+#' @param deltaOdData (DATAFRAME) NIRS data containing the delta od values for each channel. This should be in the format of the output from the function \code{\link{create_delta_ods}}.
+#' @param extMatrix (MATRIX) The extinction coefficients for each wavelength. This should be in the format of the output from the function \code{\link{create_ext_matrix}}.
+#' @param pathLength (NUMERIC) a value specifying the pathlength of the light through the tissue. This should be in cm. The default value is 2.5.
+#' @param dpf (NUMERIC) a value specifying the differential path length factor. The default value is 6.
 #' @return a data frame which adds the HbO and HbR values for each channel to new columns.
 #'
+#' @export
 #' @examples
+#' \dontrun{
 #' data <- read_nirs_data("data.csv")
 #' data <- create_delta_ods(data, reference = "baseline")
 #' extMatrix <- create_ematrix(lambda1 = 730, lambda2 = 850, table= "wray")
 #' data <- apply_mbll(data, ematrix)
-#' @export
+#' }
+#' @seealso \code{\link{create_delta_ods}}, \code{\link{create_ext_matrix}}, \code{\link{import_nirs}}
+
 
 
 apply_mbll <- function(deltaOdData, extMatrix, pathLength = 2.5, dpf = 6){

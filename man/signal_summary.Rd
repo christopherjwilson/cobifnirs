@@ -7,7 +7,7 @@
 signal_summary(nirsData, min = 1000, max = 4000)
 }
 \arguments{
-\item{nirsData}{A dataframe containing NIRS data in a long format that has been imported using the import_nirs function.}
+\item{nirsData}{(DATAFRAME)  NIRS data that has been imported using the \code{\link{import_nirs}} function.}
 
 \item{min}{The lower value for the signal data to be considered "weak". Default is 1000.}
 
@@ -20,7 +20,11 @@ A dataframe with the signal summary.
 This function will generate a summary of the signal data to view weak and saturated channels. The output contains the optode, the status of the min and max signal values, the status of the mean signal value, and whether there are any NA values in the signal data. It is meant as a quick way to check the quality of the signal data. Can be used in conjunction with visual inspection to determine low quality channels.
 }
 \examples{
-
+\dontrun{
 nirsData <- import_nirs("path/to/nir/file.nir")
 nirsData <- signal_summary(nirsData)
+}
+}
+\seealso{
+\code{\link{import_nirs}}
 }

@@ -56,7 +56,7 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>nirsData</dt>
-<dd><p>A dataframe containing NIRS data in a long format that has been imported using the import_nirs function.</p></dd>
+<dd><p>(DATAFRAME)  NIRS data that has been imported using the <code><a href="import_nirs.html">import_nirs</a></code> function.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -65,14 +65,17 @@
 
 <p>A dataframe with the ambient light channel removed.</p>
     </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p><code><a href="import_nirs.html">import_nirs</a></code></p></div>
+    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_nirs.html">import_nirs</a></span><span class="op">(</span><span class="st">"path/to/nir/file.nir"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open file 'path/to/nir/file.nir': No such file or directory</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in file(con, "r"):</span> cannot open the connection</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="import_nirs.html">import_nirs</a></span><span class="op">(</span><span class="st">"path/to/nir/file.nir"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu">remove_ambient</span><span class="op">(</span><span class="va">nirsData</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::filter(., freq != "ambient"):</span> object 'nirsData' not found</span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -83,7 +86,7 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Christopher Wilson.</p>
+  <p></p><p>Developed by Christopher J Wilson.</p>
 </div>
 
 <div class="pkgdown">

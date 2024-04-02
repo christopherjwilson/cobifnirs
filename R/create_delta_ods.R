@@ -1,11 +1,14 @@
 #' @title Calculate change in optical density (delta od) from NIRS data
 #' @description Calculates the change in oxygen density (delta od) for each channel from NIRS data, based on a reference value.
-#' @param data a data frame containing the NIRS data. This should be in the format of the output from the function \code{\link{import_nirs}}.
-#' @param reference a character string specifying the reference value to use for calculating delta od. This can be either 'baseline' or 'mean'. If 'baseline', the baseline value for each channel is used as the reference value. If 'mean', the mean value for each channel is used as the reference value.
+#' @param nirsData (DATAFRAME) This should be in the format of the output from the function \code{\link{import_nirs}}.
+#' @param reference (STRING) specifying the reference value to use for calculating delta od. This can be either 'baseline' or 'mean'. If 'baseline', the baseline value for each channel is used as the reference value. If 'mean', the mean value for each channel is used as the reference value. Default is 'baseline'.
 #' @return a data frame which adds the delta od values for each channel to a new column.
 #' @examples
+#' \dontrun{
 #' data <- read_nirs_data("data.csv")
 #' data <- create_delta_ods(data, reference = "baseline")
+#' }
+#' @seealso \code{\link{import_nirs}}, \code{\link{apply_mbll}}
 #' @export
 
 

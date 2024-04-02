@@ -56,19 +56,19 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>deltaOdData</dt>
-<dd><p>a data frame containing the delta od values for each channel. This should be in the format of the output from the function <code><a href="create_delta_ods.html">create_delta_ods</a></code>.</p></dd>
+<dd><p>(DATAFRAME) NIRS data containing the delta od values for each channel. This should be in the format of the output from the function <code><a href="create_delta_ods.html">create_delta_ods</a></code>.</p></dd>
 
 
 <dt>extMatrix</dt>
-<dd><p>a numeric matrix containing the extinction coefficients for each wavelength and chromophore. This should be in the format of the output from the function <code>create_ematrix</code>.</p></dd>
+<dd><p>(MATRIX) The extinction coefficients for each wavelength. This should be in the format of the output from the function <code>create_ext_matrix</code>.</p></dd>
 
 
 <dt>pathLength</dt>
-<dd><p>a numeric value specifying the pathlength of the light through the tissue. This should be in cm. The default value is 2.5 cm.</p></dd>
+<dd><p>(NUMERIC) a value specifying the pathlength of the light through the tissue. This should be in cm. The default value is 2.5.</p></dd>
 
 
 <dt>dpf</dt>
-<dd><p>a numeric value specifying the differential pathlength factor. The default value is 6.</p></dd>
+<dd><p>(NUMERIC) a value specifying the differential path length factor. The default value is 6.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -77,17 +77,19 @@
 
 <p>a data frame which adds the HbO and HbR values for each channel to new columns.</p>
     </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p><code><a href="create_delta_ods.html">create_delta_ods</a></code>, <code>create_ext_matrix</code>, <code><a href="import_nirs.html">import_nirs</a></code></p></div>
+    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">read_nirs_data</span><span class="op">(</span><span class="st">"data.csv"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in read_nirs_data("data.csv"):</span> could not find function "read_nirs_data"</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">read_nirs_data</span><span class="op">(</span><span class="st">"data.csv"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_delta_ods.html">create_delta_ods</a></span><span class="op">(</span><span class="va">data</span>, reference <span class="op">=</span> <span class="st">"baseline"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in UseMethod("filter"):</span> no applicable method for 'filter' applied to an object of class "function"</span>
 <span class="r-in"><span><span class="va">extMatrix</span> <span class="op">&lt;-</span> <span class="fu">create_ematrix</span><span class="op">(</span>lambda1 <span class="op">=</span> <span class="fl">730</span>, lambda2 <span class="op">=</span> <span class="fl">850</span>, table<span class="op">=</span> <span class="st">"wray"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in create_ematrix(lambda1 = 730, lambda2 = 850, table = "wray"):</span> could not find function "create_ematrix"</span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">apply_mbll</span><span class="op">(</span><span class="va">data</span>, <span class="va">ematrix</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in apply_mbll(data, ematrix):</span> object 'ematrix' not found</span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -98,7 +100,7 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Christopher Wilson.</p>
+  <p></p><p>Developed by Christopher J Wilson.</p>
 </div>
 
 <div class="pkgdown">

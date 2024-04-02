@@ -50,27 +50,31 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">import_nirs</span><span class="op">(</span><span class="va">nirFile</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">import_nirs</span><span class="op">(</span><span class="va">nirFile</span>, folder <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>nirFile</dt>
-<dd><p>Path to the .nir file</p></dd>
+<dd><p>(STRING) Path to the .nir file.</p></dd>
+
+
+<dt>folder</dt>
+<dd><p>(STRING: optional) Path to the folder containing the .nir file (ending with /). If you specify the folder, you do not need to include the folder path in the nirFile parameter. This can be useful if you have multiple files in the same folder, and can be combined with lapply to import multiple files at once (see example).</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>A dataframe with the data in a long format with the following columns: t, startTime, fileName, dataRow, optode, freq, nirValue.</p><ul><li><p>t: time in seconds from the start of the recording. You will see that this matches the values of the first column in COBI Studio .nir file.</p></li>
+<p>A dataframe with the data in a long format with the following columns:</p><ul><li><p>t: time in seconds from the start of the recording. You will see that this matches the values of the first column in COBI Studio .nir file.</p></li>
 <li><p>startTime: the start time of the recording. This is taken from the .nir file.</p></li>
 <li><p>fileName: the name of the file (full path)</p></li>
 <li><p>dataRow: the row number of the data as it is in the original .nir file. The first row of the data is the first row after the baseline data ends in the original .nir file.</p></li>
 <li><p>optode: the optode number (e.g., 1-16)</p></li>
 <li><p>freq: the frequency (e.g., 730, 850)</p></li>
 <li><p>nirValue: the value of the nir data (light intensity) for that optode and frequency at that time point. This matches the values in the original .nir file.</p></li>
-<li><p>baselineValue: the baseline value for that optode and frequency. This is taken from the 10 second baseline period at the start of the recording, and is stored in the original .nir file. You can choose to use this value to calculate the change in optical density, if you wish. Either way, the baseline value is retained in the data frame for reference.</p></li>
+<li><p>baselineValue: the baseline value for that optode and frequency. This is taken from the 10 second baseline period at the start of the recording, which was stored in the original .nir file.</p></li>
 </ul></div>
     <div id="details">
     <h2>Details</h2>
@@ -79,9 +83,42 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu">import_nirs</span><span class="op">(</span><span class="st">"path/to/nir/file.nir"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open file 'path/to/nir/file.nir': No such file or directory</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in file(con, "r"):</span> cannot open the connection</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Import a single .nir file</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu">import_nirs</span><span class="op">(</span><span class="st">"path/to/nir/file.nir"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Import multiple .nir files</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># path should be the folder where the file is, ending in /</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="va">myPath</span> <span class="op">&lt;-</span> <span class="st">"C:.../fnirs_data/"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#list all of the nirs files in a directory</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">nirsFiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">".nir$"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, path <span class="op">=</span> <span class="va">myPath</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># import all of the nirs files</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">nirsFiles</span>, <span class="va">import_nirs</span>, folder <span class="op">=</span> <span class="va">myPath</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># base the number of participants on the number of files in the directory</span></span></span>
+<span class="r-in"><span><span class="co"># this is useful for later analysis</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">nparticipants</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">nirsFiles</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># add a participant id as the name of each dataframe in the data list</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">nirsData</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"p"</span>,<span class="va">pids</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># add the participant id column to each of the dataframes in the data list,</span></span></span>
+<span class="r-in"><span><span class="co"># so we can identify each dataset if they are combined later</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="va">`[&lt;-`</span>, <span class="va">nirsData</span>, <span class="st">'npid'</span>, value <span class="op">=</span> <span class="va">pids</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -92,7 +129,7 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Christopher Wilson.</p>
+  <p></p><p>Developed by Christopher J Wilson.</p>
 </div>
 
 <div class="pkgdown">
