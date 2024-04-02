@@ -19,8 +19,9 @@ Calculates the change in oxygen density (delta od) for each channel from NIRS da
 }
 \examples{
 \dontrun{
-data <- read_nirs_data("data.csv")
-data <- create_delta_ods(data, reference = "baseline")
+nirsData <- import_nirs("path/to/nirs/data.nir")
+# Create the delta ODs
+nirsData <- create_delta_ods(nirsData, reference = "baseline")
 }
 }
 \seealso{

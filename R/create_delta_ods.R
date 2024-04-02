@@ -5,8 +5,9 @@
 #' @return a data frame which adds the delta od values for each channel to a new column.
 #' @examples
 #' \dontrun{
-#' data <- read_nirs_data("data.csv")
-#' data <- create_delta_ods(data, reference = "baseline")
+#' nirsData <- import_nirs("path/to/nirs/data.nir")
+#' # Create the delta ODs
+#' nirsData <- create_delta_ods(nirsData, reference = "baseline")
 #' }
 #' @seealso \code{\link{import_nirs}}, \code{\link{apply_mbll}}
 #' @export
