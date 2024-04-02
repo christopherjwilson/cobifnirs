@@ -24,7 +24,7 @@ devtools::install_github("christopherjwilson/cobifnirs")
 
 ```
 
-## Getting started
+## Documentation will be updated when this package is ready for use.
 
 
 

@@ -18,4 +18,4 @@ You can install the development version of cobifnirs from [GitHub]()
 devtools::install_github("christopherjwilson/cobifnirs")
 ```
 
-## Getting started
+## Documentation will be updated when this package is ready for use.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_delta_ods.R
 \name{create_delta_ods}
 \alias{create_delta_ods}
-\title{Calculate change in oxygen density (delta od) from NIRS data}
+\title{Calculate change in optical density (delta od) from NIRS data}
 \usage{
 create_delta_ods(nirsData, reference = "baseline")
 }
@@ -18,8 +18,6 @@ a data frame which adds the delta od values for each channel to a new column.
 Calculates the change in oxygen density (delta od) for each channel from NIRS data, based on a reference value.
 }
 \examples{
-\dontrun{
 data <- read_nirs_data("data.csv")
 data <- create_delta_ods(data, reference = "baseline")
-}
 }

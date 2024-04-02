@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_markers.R
 \name{add_markers}
 \alias{add_markers}
-\title{add_markers}
+\title{Add markers to NIRS data}
 \usage{
 add_markers(nirsData, allowDuplicates = FALSE, removeDuplicates = FALSE)
 }
@@ -12,6 +12,9 @@ add_markers(nirsData, allowDuplicates = FALSE, removeDuplicates = FALSE)
 \item{allowDuplicates}{A logical value. If TRUE, the function will allow duplicate dataRow values in the marker file. Default is FALSE.}
 
 \item{removeDuplicates}{A logical value. If TRUE, the function will remove duplicate dataRow values in the marker file, retaining only the first marker value for that particular datapoint. Default is FALSE.}
+}
+\value{
+A dataframe with the markers added as a new column.
 }
 \description{
 This function will add markers to the NIRS data. The data must be in a long format (imported using import_nirs) and markers must be in a separate file with the exact same name as the NIRS file (with .mrk extension). The returned data will have the markers added as a new column. If there are duplicate markers (i.e. more than one marker sent within a 500ms window), the function will either allow duplicates or remove them, depending on the parameters set.

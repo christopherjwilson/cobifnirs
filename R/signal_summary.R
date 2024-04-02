@@ -1,8 +1,9 @@
 #' @title Generate a summary of the signal data to view weak and saturated channels
-#' @description This function will generate a summary of the signal data to view weak and saturated channels. The output contains the optode, the status of the min and max signal values, the status of the mean signal value, and whether there are any NA values in the signal data. It is meant as a quick way to check the quality of the signal data. Can be used in conjunction with visual inspection from the plot_signal function.
+#' @description This function will generate a summary of the signal data to view weak and saturated channels. The output contains the optode, the status of the min and max signal values, the status of the mean signal value, and whether there are any NA values in the signal data. It is meant as a quick way to check the quality of the signal data. Can be used in conjunction with visual inspection to determine low quality channels.
 #' @param nirsData A dataframe containing NIRS data in a long format that has been imported using the import_nirs function.
 #' @param min The lower value for the signal data to be considered "weak". Default is 1000.
 #' @param max The upper value for the signal data to be considered "saturated". Default is 4000.
+#' @return A dataframe with the signal summary.
 #' @import dplyr
 #' @export
 #' @examples

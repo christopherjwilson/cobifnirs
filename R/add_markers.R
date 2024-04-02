@@ -1,8 +1,9 @@
-#' @title add_markers
+#' @title Add markers to NIRS data
 #' @description This function will add markers to the NIRS data. The data must be in a long format (imported using import_nirs) and markers must be in a separate file with the exact same name as the NIRS file (with .mrk extension). The returned data will have the markers added as a new column. If there are duplicate markers (i.e. more than one marker sent within a 500ms window), the function will either allow duplicates or remove them, depending on the parameters set.
 #' @param nirsData A dataframe containing NIRS data in a long format that has been imported using the import_nirs function.
 #' @param allowDuplicates A logical value. If TRUE, the function will allow duplicate dataRow values in the marker file. Default is FALSE.
 #' @param removeDuplicates A logical value. If TRUE, the function will remove duplicate dataRow values in the marker file, retaining only the first marker value for that particular datapoint. Default is FALSE.
+#' @return A dataframe with the markers added as a new column.
 #' @import dplyr
 #' @import stringr
 #' @import readr
@@ -36,8 +37,12 @@
 #'
 #' nirsData <- add_markers(nirsData, removeDuplicates = TRUE)
 
+
+
 add_markers <- function(nirsData, allowDuplicates = FALSE, removeDuplicates = FALSE){
-  nirFileName <- nirsData$fileName[1]
+
+
+    nirFileName <- nirsData$fileName[1]
 
   fullMrkPath <- paste(str_sub(nirFileName, 1, nchar(nirFileName)-4),".mrk", sep = "")  # name the marker file. If it exists, it should have exact same name as nir file
 

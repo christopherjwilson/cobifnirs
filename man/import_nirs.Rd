@@ -12,17 +12,18 @@ import_nirs(nirFile)
 \value{
 A dataframe with the data in a long format with the following columns: t, startTime, fileName, dataRow, optode, freq, nirValue.
 \itemize{
-\item t: time in seconds from the start of the recording
-\item startTime: the start time of the recording
+\item t: time in seconds from the start of the recording. You will see that this matches the values of the first column in COBI Studio .nir file.
+\item startTime: the start time of the recording. This is taken from the .nir file.
 \item fileName: the name of the file (full path)
-\item dataRow: the row number of the data as it is in the original .nir file. The first row of the data is the first row after the baseline data. You will see that this matches the values of the first column in COBI Studio .nir file.
+\item dataRow: the row number of the data as it is in the original .nir file. The first row of the data is the first row after the baseline data ends in the original .nir file.
 \item optode: the optode number (e.g., 1-16)
 \item freq: the frequency (e.g., 730, 850)
-\item nirValue: the value of the NIR data for that optode and frequency at that time point.
+\item nirValue: the value of the nir data (light intensity) for that optode and frequency at that time point. This matches the values in the original .nir file.
+\item baselineValue: the baseline value for that optode and frequency. This is taken from the 10 second baseline period at the start of the recording, and is stored in the original .nir file. You can choose to use this value to calculate the change in optical density, if you wish. Either way, the baseline value is retained in the data frame for reference.
 }
 }
 \description{
-This function will import a .nir file, identify the baseline values and return a dataframe with the data in a long format.
+This function will import a .nir file, identify the baseline values and return a dataframe with the NIRS data in a long format.
 }
 \details{
 This function will import a .nir file, identify the baseline values and return a dataframe with the data in a long format.

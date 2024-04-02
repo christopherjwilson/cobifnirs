@@ -11,6 +11,9 @@ remove_channels(nirsData, channels)
 
 \item{channels}{A vector of channel names to remove from the NIRS data. The channel names must match the names in the \emph{optode} column of the nirs data (i.e., 1-16).}
 }
+\value{
+A dataframe with the specified channels removed.
+}
 \description{
 This function will remove the specified channels from the NIRS data. This can be useful if you have channels that are not required for your analysis or if channels are saturated or weak, or noisy.
 }

@@ -5,8 +5,7 @@ Authors@R:
     person("Christopher", "Wilson", , "christopher.wilson@tees.ac.uk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7155-0662"))
 Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
@@ -14,6 +13,7 @@ Imports:
     dplyr,
     janitor,
     stringr,
-    tibble
+    tibble,
+    readr
 URL: https://github.com/christopherjwilson/cobifnirs
 BugReports: https://github.com/christopherjwilson/cobifnirs/issues
