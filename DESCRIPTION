@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Christopher", "Wilson", "J" , "christopher.wilson@tees.ac.uk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7155-0662"))
-Description: What the package does (one paragraph).
+Description: This package provides functions to import and process fNIRS data from COBI Studio in R.
 License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
