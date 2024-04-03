@@ -2,6 +2,7 @@ url: https://christopherjwilson.github.io/cobifnirs/
 template:
   bootstrap: 5
   opengraph:
-    image: images/plot1.png
-    title: cobifnirs
+    image:
+      src: images/plot1.png
+      title: cobifnirs
 
