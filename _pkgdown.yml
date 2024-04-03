@@ -3,5 +3,5 @@ template:
   bootstrap: 5
   opengraph:
     image: images/plot1.png
-    title: "cobifnirs"
+    title: cobifnirs
 
