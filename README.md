@@ -1,6 +1,8 @@
 Cobi fNIRS
 ================
 
+[![DOI](https://zenodo.org/badge/779680219.svg)](https://zenodo.org/doi/10.5281/zenodo.10912115)
+
 For importing and working with fNIRS data from COBI Studio in R.
 
 ## Current status (April 2024)
