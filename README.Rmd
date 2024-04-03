@@ -115,7 +115,9 @@ nirData <- signal_quality(nirData)
 signal_summary <- lapply(nirsData, signalSummary, min=1000, max = 4000)
 signal_summary <- bind_rows(signal_summary, .id = "PID")
 problem_channels <- signal_summary %>% filter(min_max_signal_status != "ok")
-write.csv(signal_summary, "signal_summary.csv")
+write.csv(problem_channels, "problem_channels.csv")
+
+
 
 
 
