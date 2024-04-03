@@ -106,10 +106,11 @@
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/christopherjwilson/cobifnirs" class="external-link">cobifnirs</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Import a single .nir file</span></span>
 <span></span>
-<span><span class="va">nirData</span> <span class="op">&lt;-</span> <span class="fu">import_nir</span><span class="op">(</span><span class="st">"path/to/your/data.nir"</span><span class="op">)</span></span>
+<span><span class="va">nirData</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/import_nirs.html">import_nirs</a></span><span class="op">(</span><span class="st">"path/to/your/data.nir"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Import multiple .nir files</span></span>
 <span><span class="co"># path should be the folder where the file is, ending in /</span></span>
@@ -122,22 +123,22 @@
 <span></span>
 <span><span class="co"># import all of the nirs files</span></span>
 <span></span>
-<span> <span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">nirsFiles</span>, <span class="va">import_nirs</span>, folder <span class="op">=</span> <span class="va">myPath</span><span class="op">)</span></span>
+<span><span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">nirsFiles</span>, <span class="va">import_nirs</span>, folder <span class="op">=</span> <span class="va">myPath</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># base the number of participants on the number of files in the directory</span></span>
 <span><span class="co"># this is useful for later analysis</span></span>
 <span></span>
-<span>  <span class="va">nparticipants</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">nirsFiles</span><span class="op">)</span></span>
+<span><span class="va">nparticipants</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">nirsFiles</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># add a participant id as the name of each dataframe in the data list</span></span>
 <span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">nirsData</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"p"</span>,<span class="va">pids</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">nirsData</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"p"</span>,<span class="va">pids</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add the participant id column to each of the dataframes in the data list,</span></span>
 <span><span class="co"># so we can identify each dataset if they are combined later</span></span>
 <span></span>
-<span>  <span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="va">`[&lt;-`</span>, <span class="va">nirsData</span>, <span class="st">'npid'</span>, value <span class="op">=</span> <span class="va">pids</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="va">`[&lt;-`</span>, <span class="va">nirsData</span>, <span class="st">'npid'</span>, value <span class="op">=</span> <span class="va">pids</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="adding-the-markers-to-the-data">Adding the markers to the data<a class="anchor" aria-label="anchor" href="#adding-the-markers-to-the-data"></a>
@@ -148,7 +149,7 @@
 <code class="sourceCode R"><span></span>
 <span><span class="co"># add markers to a single dataset</span></span>
 <span></span>
-<span><span class="va">nirData</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_markers.html">add_markers</a></span><span class="op">(</span><span class="va">nirData</span><span class="op">)</span></span>
+<span><span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_markers.html">add_markers</a></span><span class="op">(</span><span class="va">nirsData</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add markers to multiple datasets</span></span>
 <span></span>
@@ -161,13 +162,13 @@
 <code class="sourceCode R"><span></span>
 <span><span class="co"># create a summary report of signal quality for a single dataset</span></span>
 <span></span>
-<span><span class="va">nirData</span> <span class="op">&lt;-</span> <span class="fu">signal_quality</span><span class="op">(</span><span class="va">nirData</span><span class="op">)</span></span>
+<span><span class="va">signalSummary</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/signal_summary.html">signal_summary</a></span><span class="op">(</span><span class="va">nirData</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create a summary report of signal quality for multiple datasets and write to a file</span></span>
 <span></span>
-<span><span class="va">signal_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">nirsData</span>, <span class="va">signalSummary</span>, min<span class="op">=</span><span class="fl">1000</span>, max <span class="op">=</span> <span class="fl">4000</span><span class="op">)</span></span>
-<span><span class="va">signal_summary</span> <span class="op">&lt;-</span> <span class="fu">bind_rows</span><span class="op">(</span><span class="va">signal_summary</span>, .id <span class="op">=</span> <span class="st">"PID"</span><span class="op">)</span></span>
-<span><span class="va">problem_channels</span> <span class="op">&lt;-</span> <span class="va">signal_summary</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">min_max_signal_status</span> <span class="op">!=</span> <span class="st">"ok"</span><span class="op">)</span></span>
+<span><span class="va">signalSummary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">nirsData</span>, <span class="va">signal_summary</span>, min<span class="op">=</span><span class="fl">1000</span>, max <span class="op">=</span> <span class="fl">4000</span><span class="op">)</span></span>
+<span><span class="va">signalSummary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">signalSummary</span>, .id <span class="op">=</span> <span class="st">"PID"</span><span class="op">)</span></span>
+<span><span class="va">problem_channels</span> <span class="op">&lt;-</span> <span class="va">signalSummary</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">min_max_signal_status</span> <span class="op">!=</span> <span class="st">"ok"</span> <span class="op">||</span> <span class="va">mean_signal_status</span> <span class="op">!=</span> <span class="st">"ok"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">problem_channels</span>, <span class="st">"problem_channels.csv"</span><span class="op">)</span></span>
 <span></span>
 <span></span>
@@ -180,7 +181,7 @@
 <code class="sourceCode R"><span></span>
 <span><span class="co"># remove selected channels from a single dataset</span></span>
 <span></span>
-<span><span class="va">nirData</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/remove_channels.html">remove_channels</a></span><span class="op">(</span><span class="va">nirData</span>, channels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">nirsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/remove_channels.html">remove_channels</a></span><span class="op">(</span><span class="va">nirsData</span>, channels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># remove selected channels from multiple datasets</span></span>
 <span></span>
@@ -188,11 +189,11 @@
 <span></span>
 <span><span class="va">problem_channels_r</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">myPath</span>, <span class="st">"/problem_channels.csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">problem_channels_r</span><span class="op">$</span><span class="va">remove</span> <span class="op">&lt;-</span> <span class="fu">if_else</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">problem_channels_r</span><span class="op">$</span><span class="va">remove</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">problem_channels_r</span><span class="op">$</span><span class="va">remove</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">problem_channels_r</span><span class="op">$</span><span class="va">remove</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">problem_channels_r</span><span class="op">$</span><span class="va">remove</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">as.logical</a></span><span class="op">(</span><span class="va">problem_channels_r</span><span class="op">$</span><span class="va">remove</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">problem_channels_r</span> <span class="op">&lt;-</span> <span class="va">problem_channels_r</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">problem_channels_r</span><span class="op">$</span><span class="va">remove</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span> </span>
+<span><span class="va">problem_channels_r</span> <span class="op">&lt;-</span> <span class="va">problem_channels_r</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">problem_channels_r</span><span class="op">$</span><span class="va">remove</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="co">## remove the channels (after visual inspection too!)</span></span>
 <span></span>
