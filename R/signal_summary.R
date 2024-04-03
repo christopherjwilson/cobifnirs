@@ -9,7 +9,7 @@
 #' @examples
 #' \dontrun{
 #' nirsData <- import_nirs("path/to/nir/file.nir")
-#' nirsData <- signal_summary(nirsData)
+#' signalSummary <- signal_summary(nirsData)
 #' }
 #' @seealso \code{\link{import_nirs}}
 

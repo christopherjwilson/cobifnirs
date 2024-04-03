@@ -7,7 +7,7 @@
 #' \dontrun{
 #' nirsData <- import_nirs("path/to/nirs/data.nir")
 #' # Create the delta ODs
-#' nirsData <- create_delta_ods(nirsData, reference = "baseline")
+#' deltaOds <- create_delta_ods(nirsData, reference = "baseline")
 #' }
 #' @seealso \code{\link{import_nirs}}, \code{\link{apply_mbll}}
 #' @export

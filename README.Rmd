@@ -51,10 +51,11 @@ devtools::install_github("christopherjwilson/cobifnirs")
 
 ``` r
 library(cobifnirs)
+library(dplyr)
 
 # Import a single .nir file
 
-nirData <- import_nir("path/to/your/data.nir")
+nirData <- import_nirs("path/to/your/data.nir")
 
 # Import multiple .nir files
 # path should be the folder where the file is, ending in /
@@ -67,22 +68,22 @@ nirsFiles <- list.files(pattern = ".nir$", recursive = TRUE, path = myPath)
 
 # import all of the nirs files
 
- nirsData <- lapply(nirsFiles, import_nirs, folder = myPath)
+nirsData <- lapply(nirsFiles, import_nirs, folder = myPath)
 
 # base the number of participants on the number of files in the directory
 # this is useful for later analysis
 
-  nparticipants <- length(nirsFiles)
+nparticipants <- length(nirsFiles)
 
 
 # add a participant id as the name of each dataframe in the data list
 
-  names(nirsData) <- c(paste("p",pids, sep = ""))
+names(nirsData) <- c(paste("p",pids, sep = ""))
 
 # add the participant id column to each of the dataframes in the data list,
 # so we can identify each dataset if they are combined later
 
-  nirsData <- mapply(`[<-`, nirsData, 'npid', value = pids, SIMPLIFY = FALSE)
+nirsData <- mapply(`[<-`, nirsData, 'npid', value = pids, SIMPLIFY = FALSE)
 
 
 ```
@@ -97,7 +98,7 @@ See the function documentation for more details on how to use this function (re:
 
 # add markers to a single dataset
 
-nirData <- add_markers(nirData)
+nirsData <- add_markers(nirsData)
 
 # add markers to multiple datasets
 
@@ -111,13 +112,13 @@ nirsData <- lapply(nirsData, add_markers)
 
 # create a summary report of signal quality for a single dataset
 
-nirData <- signal_quality(nirData)
+signalSummary <- signal_summary(nirData)
 
 # create a summary report of signal quality for multiple datasets and write to a file
 
-signal_summary <- lapply(nirsData, signalSummary, min=1000, max = 4000)
-signal_summary <- bind_rows(signal_summary, .id = "PID")
-problem_channels <- signal_summary %>% filter(min_max_signal_status != "ok")
+signalSummary <- lapply(nirsData, signal_summary, min=1000, max = 4000)
+signalSummary <- bind_rows(signalSummary, .id = "PID")
+problem_channels <- signalSummary %>% filter(min_max_signal_status != "ok" || mean_signal_status != "ok")
 write.csv(problem_channels, "problem_channels.csv")
 
 
@@ -133,7 +134,7 @@ write.csv(problem_channels, "problem_channels.csv")
 
 # remove selected channels from a single dataset
 
-nirData <- remove_channels(nirData, channels = c(1, 2, 3))
+nirsData <- remove_channels(nirsData, channels = c(1, 2, 3))
 
 # remove selected channels from multiple datasets
 
