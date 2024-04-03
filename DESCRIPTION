@@ -1,5 +1,5 @@
 Package: cobifnirs
-Title: Import And Process fNIRS Data from COBI Studio
+Title: Import And Process fNIRS Data from COBI Studio in R
 Version: 0.0.0.9000
 Authors@R: 
     person("Christopher", "Wilson", "J" , "christopher.wilson@tees.ac.uk", role = c("aut", "cre"),
