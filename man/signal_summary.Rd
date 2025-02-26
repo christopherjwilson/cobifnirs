@@ -21,8 +21,35 @@ This function will generate a summary of the signal data to view weak and satura
 }
 \examples{
 \dontrun{
+# To generate a signal summary from a single NIRS file
 nirsData <- import_nirs("path/to/nir/file.nir")
-nirsData <- signal_summary(nirsData)
+signalSummary <- signal_summary(nirsData)
+
+ # To generate a signal summary from multiple NIRS files
+
+ ##  name path to files (ending in "/")
+ mypath <- paste0(system.file("extdata", package = "cobifnirs"),"/")
+
+ ## List all files in the folder that end in ".nir"
+ nirsFiles <- list.files(mypath, pattern = ".nir", full.names = FALSE)
+
+ ## Import all of the nirs files
+ nirsData <- lapply(nirsFiles, import_nirs, folder = myPath)
+
+## Generate a signal summary for each of the nirs files
+signalSummary <- lapply(nirsData, signal_summary)
+
+## Combine the signal summaries into a single dataframe (recommend you name each of the dataframes in the list first)
+
+
+## add a column to each dataframe in the list to identify the participant - in this example, pids is a vector of participant ids
+
+signalSummary <- mapply(`[<-`, signalSummary, 'npid', value = pids, SIMPLIFY = FALSE)
+
+## combine the dataframes into a single dataframe
+
+signalSummary <- do.call(rbind, signalSummary)
+
 }
 }
 \seealso{

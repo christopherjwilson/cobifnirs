@@ -17,3 +17,6 @@ Imports:
     readr
 URL: https://github.com/christopherjwilson/cobifnirs, https://christopherjwilson.github.io/cobifnirs/
 BugReports: https://github.com/christopherjwilson/cobifnirs/issues
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

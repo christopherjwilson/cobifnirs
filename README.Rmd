@@ -139,6 +139,8 @@ nirsData <- remove_channels(nirsData, channels = c(1, 2, 3))
 # remove selected channels from multiple datasets
 
 ## List of problem channels for removal
+## You need to have created a file with channels to remove. This is best done by running the signal_summary function and then visually inspecting the channels to remove. Then export the signal_summary data frame to a csv file and add an extra column to indicate whether the channel should be removed or not.
+## In the current example, this file is called problem_channels.csv and the column is called "remove".
 
 problem_channels_r <- read_csv(paste0(myPath, "/problem_channels.csv"))
 
@@ -148,7 +150,7 @@ problem_channels_r$remove <- as.logical(problem_channels_r$remove)
 
 problem_channels_r <- problem_channels_r %>% filter(problem_channels_r$remove == TRUE) 
 
-## remove the channels (after visual inspection too!)
+## Once the information has been imported and filtered, you can remove the channels from the data using the fuction below. All of the channels in the problem_channels_r data frame will be removed from the nirData list, leaving only the good channels.
 
 nirsData <- lapply(nirsData, removeChannels, problem_channels_r)
 
