@@ -49,14 +49,14 @@ signal_summary <- function(nirsData, min = 1000, max = 4000){
     expr = {
       signal_summary <- nirsData %>%
         dplyr::group_by(optode) %>%
-        dplyr::summarise(min_max_signal_status = case_when(
+        dplyr::summarise(min_max_signal_status = dplyr::case_when(
           min(nirValue) < min ~ "weak",
           max(nirValue) >= max ~ "saturated",
           min(nirValue) > min & max(nirValue) < max ~ "ok"
-        ), mean_signal_status = case_when(
-          mean(nirValue,  na.rm = TRUE) < min ~ "weak",
-          mean(nirValue,  na.rm = TRUE) >= max ~ "saturated",
-          mean(nirValue,  na.rm = TRUE) > min & max(nirValue) < max ~ "ok"
+        ), mean_signal_status = dplyr::case_when(
+          mean(nirValue) < min ~ "weak",
+          mean(nirValue) >= max ~ "saturated",
+          mean(nirValue) > min & mean(nirValue) < max ~ "ok"
         ),
         has_na = any(is.na(nirValue))) %>%
         dplyr::ungroup()

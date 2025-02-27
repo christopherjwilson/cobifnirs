@@ -1,0 +1,85 @@
+#'@title Apply the Modified Beer-Lambert Law to delta oxy values to calculate the concentration changes of HbO and HbR.
+#'@description This function applies the Modified Beer-Lambert Law to delta oxy values to calculate the concentration changes of HbO and HbR. It does so using the extinction coefficients of HbO and HbR at the two wavelengths that were calculated using the `get_ext_values` function.
+#'@param delta_od A dataframe with the delta_od values. This should be the output of the `create_delta_od` function.
+#'@param e_matrix A matrix with the extinction coefficients of HbO and HbR at the two wavelengths. This should be the output of the `get_ext_values` function.
+#'@param dpf The differential pathlength factor. The default is 6. This can be changed if the dpf is known to be different.
+#'@param l The distance between the light source and the detector (in cm). The default is 2.5cm. This can be changed if the distance is known to be different.
+#'@return A dataframe with the concentration changes of HbO and HbR.
+#'@import dplyr
+#'@export
+
+
+
+
+applyMBLL <- function(deltaOds, e_matrix, dpf = 6, l = 2.5) {
+
+  # check if the input is a dataframe
+  if(!is.data.frame(deltaOds)){
+    stop("deltaOds must be a dataframe")
+  }
+
+  # check if the e_matrix is a matrix
+  if(!is.matrix(e_matrix)){
+    stop("e_matrix must be a matrix")
+  }
+
+  # check if the e_matrix has 2 columns
+  if(ncol(e_matrix) != 2){
+    stop("e_matrix looks to be formatted incorrectly. It should have 2 columns")
+  }
+
+  # check if the e_matrix has 2 rows
+  if(nrow(e_matrix) != 2){
+    stop("e_matrix looks to be formatted incorrectly. It should have 2 rows")
+  }
+
+  # check if the dpf is a number
+  if(!is.numeric(dpf)){
+    stop("dpf must be a number")
+  }
+
+  # check if the l is a number
+  if(!is.numeric(l)){
+    stop("l must be a number")
+  }
+
+  # check if the dpf is greater than 0
+  if(dpf <= 0){
+    stop("dpf must be greater than 0")
+  }
+
+  # check if the l is greater than 0
+  if(l <= 0){
+    stop("l must be greater than 0")
+  }
+
+  # check if the deltaOds dataframe has the correct columns
+
+  if(!all(c("optode", "t", "delta_od_850", "delta_od_730") %in% colnames(deltaOds))){
+    stop("deltaOds must have columns 'optode', 't', 'delta_od_850' and 'delta_od_730'")
+  }
+
+  # divide the l by 10 (check this)
+  l <- l * 0.1
+
+
+  # create the inverse of the e_matrix
+  e_matrix_inv <- solve(e_matrix)
+
+  # create a matrix of the delta_od values
+  delta_od_matrix <- deltaOds %>%
+    group_by(optode, t) %>%
+    summarise(hbo_hbr = e_matrix_inv %*% matrix(c(delta_od_850/(l*dpf), delta_od_730/(l*dpf))),t,dataRow, delta_od_850, delta_od_730, startTime,fileName  ) %>%
+    mutate(hbo = hbo_hbr[1,], hbr = hbo_hbr[2,]) %>%
+    ungroup()
+
+  # filter our the original hbo_hbr matrix
+  delta_od_matrix <- delta_od_matrix %>% select(-hbo_hbr) %>% distinct()
+
+
+  # return the delta_od_matrix
+  oxyData <- delta_od_matrix
+
+  return(oxyData)
+}
+

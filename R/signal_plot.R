@@ -3,6 +3,9 @@
 #' @param nirsData (DATAFRAME)  NIRS data that has been imported using the \code{\link{import_nirs}} function.
 #' @return A plot with the raw signal data from each optode.
 #' @import ggplot2
+#' @import ggnewscale
+#' @import dplyr
+#' @import tidyr
 #' @export
 #' @examples
 #' \dontrun{
@@ -27,7 +30,7 @@ signal_plot <- function(nirsData) {
 
   # if there is a marker column in the data, add a vertical line to the plot at the marker time
 
-
+if("marker" %in% colnames(nirsData)){
   p <- nirsData %>% ggplot(aes(x = t, y = nirValue, color = freq)) +
     geom_line() +
     ggnewscale::new_scale_color() +
@@ -35,7 +38,21 @@ signal_plot <- function(nirsData) {
     geom_vline(data = nirsData %>% filter(!is.na(marker)), aes(xintercept = t, linetype  = marker, colour = marker), alpha = 0.1)} +
     facet_wrap(.~ optode) +
     theme_minimal()
+} else if ("hbo" %in% colnames(nirsData)){
 
+ nirsData <- nirsData %>%
+    tidyr::pivot_longer(cols = c("hbo", "hbr"), names_to = "type", values_to = "value")
+
+
+  p <- nirsData %>% ggplot(aes(x = t, y = value, color = type)) +
+    geom_line() +
+    ggnewscale::new_scale_color() +
+    {if("marker" %in% colnames(nirsData))
+      geom_vline(data = nirsData %>% filter(!is.na(marker)), aes(xintercept = t, linetype  = marker, colour = marker), alpha = 0.1)} +
+    facet_wrap(.~ optode) +
+    theme_minimal()
+}
+  print("plot created")
 
 return(p)
 }
