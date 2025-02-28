@@ -1,6 +1,6 @@
 #' @title Generate a plot to view the raw signal data from each optode.
 #' @description This function will generate a plot to view the raw signal data from each optode. The output is a plot with the signal data on the y-axis and the time on the x-axis. The plot is meant as a quick way to check the quality of the signal data. Can be used in conjunction with the \code{\link{signal_summary}} function to determine low quality channels.
-#' @param nirsData (DATAFRAME)  NIRS data that has been imported using the \code{\link{import_nirs}} function.
+#' @param nirsData (dataframe)  NIRS data that has been imported using the \code{\link{import_nirs}} function.
 #' @return A plot with the raw signal data from each optode.
 #' @import ggplot2
 #' @import ggnewscale
@@ -14,12 +14,10 @@
 #' signalPlot <- signal_plot(nirsData)
 #'
 #' # To generate a signal plot from multiple NIRS files which have been imported using the import_nirs function
-#' nirdData <- lapply(nirsFiles, import_nirs, folder = myPath)
+#' nirsData <- lapply(nirsFiles, import_nirs, folder = myPath)
 #' signalPlot <- lapply(nirsData, signal_plot)
+#'}
 #'
-#'
-#'
-#' }
 #' @seealso \code{\link{import_nirs}}
 #'
 

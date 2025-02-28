@@ -18,7 +18,6 @@
 #' @seealso \code{\link{import_nirs}}
 #'
 
-# Create the ovygenation data (apply MBLL)
 # create change in oxygenation levels
 create_delta_od <- function(nirsData, reference = "baseline"){
 

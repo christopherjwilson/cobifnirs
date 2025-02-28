@@ -7,7 +7,7 @@
 signal_plot(nirsData)
 }
 \arguments{
-\item{nirsData}{(DATAFRAME)  NIRS data that has been imported using the \code{\link{import_nirs}} function.}
+\item{nirsData}{(dataframe)  NIRS data that has been imported using the \code{\link{import_nirs}} function.}
 }
 \value{
 A plot with the raw signal data from each optode.
@@ -22,12 +22,10 @@ nirsData <- import_nirs("path/to/nir/file.nir")
 signalPlot <- signal_plot(nirsData)
 
 # To generate a signal plot from multiple NIRS files which have been imported using the import_nirs function
-nirdData <- lapply(nirsFiles, import_nirs, folder = myPath)
+nirsData <- lapply(nirsFiles, import_nirs, folder = myPath)
 signalPlot <- lapply(nirsData, signal_plot)
-
-
-
 }
+
 }
 \seealso{
 \code{\link{import_nirs}}

@@ -11,7 +11,7 @@ add_markers(nirsData, allowDuplicates = FALSE, removeDuplicates = FALSE)
 
 \item{allowDuplicates}{(LOGICAL: optional) If TRUE, the function will allow multiple markers to be attached to the same data point in the data. This will cause extra rows in the output (see details). Default is FALSE.}
 
-\item{removeDuplicates}{(LOGICAL: optional) If TRUE, the function will remove duplicate markers that are attached to the exact same timepoint in the data, retaining only the first marker value for that particular data point. Default is FALSE.}
+\item{removeDuplicates}{(LOGICAL: optional) If TRUE, the function will remove duplicate markers that are attached to the exact same sample point in the data, retaining only the first marker value for that particular sample point. Default is FALSE.}
 }
 \value{
 A dataframe with the markers added as a new column.

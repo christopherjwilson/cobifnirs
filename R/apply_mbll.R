@@ -7,11 +7,15 @@
 #'@return A dataframe with the concentration changes of HbO and HbR.
 #'@import dplyr
 #'@export
+#' @examples
+#' \dontrun{
+#' # Assuming that the delta_od values have been calculated using the \code{\link{create_delta_od}} function and the extinction coefficients have been calculated using the \code{\link{get_ext_values}} function. dpf is set to 6 and l is set to 2.5.
+#' applyMBLL(delta_ods, e_matrix, dpf = 6, l = 2.5)
+#' }
 
 
 
-
-applyMBLL <- function(deltaOds, e_matrix, dpf = 6, l = 2.5) {
+apply_mbll <- function(deltaOds, e_matrix, dpf = 6, l = 2.5) {
 
   # check if the input is a dataframe
   if(!is.data.frame(deltaOds)){

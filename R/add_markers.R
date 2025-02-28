@@ -2,7 +2,7 @@
 #' @description This function will add markers to the NIRS data. The data must be the format generated using \code{\link{import_nirs}} and markers must be in the COBI .mrk file with the exact same name and location as the original .nir file. The returned data will have the markers added as a new column. If there are duplicate markers (i.e. more than one marker sent within a 500ms window), the function will either allow duplicates or remove them, depending on the parameters set.
 #' @param nirsData (DATAFRAME) A dataframe containing NIRS data in a long format that has been imported using the \code{\link{import_nirs}} function.
 #' @param allowDuplicates (LOGICAL: optional) If TRUE, the function will allow multiple markers to be attached to the same data point in the data. This will cause extra rows in the output (see details). Default is FALSE.
-#' @param removeDuplicates (LOGICAL: optional) If TRUE, the function will remove duplicate markers that are attached to the exact same timepoint in the data, retaining only the first marker value for that particular data point. Default is FALSE.
+#' @param removeDuplicates (LOGICAL: optional) If TRUE, the function will remove duplicate markers that are attached to the exact same sample point in the data, retaining only the first marker value for that particular sample point. Default is FALSE.
 #' @return A dataframe with the markers added as a new column.
 #' @details This function will add markers to the NIRS data. The data must be the format generated using \code{\link{import_nirs}} and markers must be in the COBI .mrk file with the exact same name and location as the original .nir file. The returned data will have the markers added as a new column.
 #'
@@ -125,7 +125,7 @@ add_markers <- function(nirsData, allowDuplicates = FALSE, removeDuplicates = FA
       stop("Both removeDuplicates and allowDuplicates are set to TRUE. This is not possible. Please set only one of these parameters to TRUE.")}
 
     if (removeDuplicates){
-      print("Duplicate dataRow values found in the marker file. This means more than one marker was recorded within 500ms. This makes it impossible to link just one of the markers with the nir value at that time. Removing duplicates and retaining only the first marker value for that particular datapoint.")
+      print("Duplicate dataRow values found in the marker file. This means more than one marker was recorded within 1 sample period (e.g, 500ms @ 2Hz). This makes it impossible to link just one of the markers with the nir value at that time. Removing duplicates and retaining only the first marker value for that particular datapoint.")
 
       # if their are duplicates, remove them and retain only the first marker value for that particular datapoint
       mrk2 <- mrk2 %>% distinct(dataRow, .keep_all = TRUE)
@@ -137,7 +137,7 @@ add_markers <- function(nirsData, allowDuplicates = FALSE, removeDuplicates = FA
 
 
     if (allowDuplicates){
-      print("Duplicate dataRow values found in the marker file. This means more than one marker was recorded within 500ms. This makes it impossible to link just one of the markers with the nir value at that time. Allowing duplicates. This will mean there will be extra rows in your nirsData output, which may not be what you want.")
+      print("Duplicate dataRow values found in the marker file. This means more than one marker was recorded within 1 sample period (e.g, 500ms @ 2Hz). This makes it impossible to link just one of the markers with the nir value at that time. Allowing duplicates. This will mean there will be extra rows in your nirsData output, which may not be what you want.")
 
       # merge the marker data with the nirs data
 
