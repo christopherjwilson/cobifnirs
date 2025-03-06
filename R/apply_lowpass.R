@@ -27,7 +27,7 @@ apply_lowpass <- function(nirData, freq = 0.1, w = 20) {
 
   nirData <- nirData %>%
     dplyr::group_by(optode, freq) %>%
-    dplyr::mutate(nir_pre_lp = nirValue) %>%
+    dplyr::mutate(nirValue_pre_lp = nirValue) %>%
     ungroup()
 
   # create the new filtered hbo and hbr values
