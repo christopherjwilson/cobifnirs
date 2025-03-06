@@ -28,7 +28,7 @@ signal_plot <- function(nirsData) {
 
   # if there is a marker column in the data, add a vertical line to the plot at the marker time
 
-if("marker" %in% colnames(nirsData)){
+if("nirValue" %in% colnames(nirsData)){
   p <- nirsData %>% ggplot(aes(x = t, y = nirValue, color = freq)) +
     geom_line() +
     ggnewscale::new_scale_color() +

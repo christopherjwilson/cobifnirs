@@ -43,5 +43,5 @@ if(table == "wray"){
   print(paste0("HbR at ", lambda2, "nm: ", e_hbr_l2$y))
 
   print("extinction coefficients calculated. Returning extinction matrix")
- return(matrix(c(e_hbo_l1$y,e_hbr_l1$y,e_hbo_l2$y, e_hbr_l2$y), ncol = 2, byrow = T) )
+ return(matrix(c(e_hbo_l1$y,e_hbr_l1$y,e_hbo_l2$y, e_hbr_l2$y), nrow = 2, byrow = T) )
 }
