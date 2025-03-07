@@ -73,7 +73,7 @@ apply_mbll <- function(deltaOds, e_matrix, dpf = 6, l = 2.5) {
   # create a matrix of the delta_od values
   delta_od_matrix <- deltaOds %>%
     group_by(optode, t) %>%
-    reframe(hbo_hbr = (1 / (DPF * L)) * (e_matrix_inv %*% matrix(c(delta_od_730, delta_od_850), ncol = 1)),t, dataRow, delta_od_850, delta_od_730, startTime,fileName) %>%
+    summarise(hbo_hbr = (1 / (dpf * l)) * (e_matrix_inv %*% matrix(c(delta_od_730, delta_od_850), ncol = 1)),t, dataRow, delta_od_850, delta_od_730, startTime,fileName) %>%
     mutate(hbo = hbo_hbr[1,], hbr = hbo_hbr[2,]) %>%
     ungroup()
 
