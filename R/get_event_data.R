@@ -17,7 +17,8 @@
 get_event_data <- function(data, eventStart, eventEnd, blockname, lead = 0, lag = 0) {
 
   data$t <- as.numeric(data$t)
-
+  data$marker <- as.character(data$marker)
+  data$dataRow <- as.numeric(data$dataRow)
 
   print(paste("event start marker: ", eventStart))
   print(paste("event end marker: ", eventEnd))
@@ -26,34 +27,109 @@ get_event_data <- function(data, eventStart, eventEnd, blockname, lead = 0, lag 
 
   # incorporate the lead parameter and select the t column that is lag points before the start marker
 
+  rawStartRows <- data %>% as.data.frame() %>%
+    filter(marker == eventStart) %>%
+    select(dataRow) %>%
+    distinct() %>%
+    pull(dataRow)
+
+  print(paste("start rows: ", rawStartRows))
+  ### print number of start rows
+  print(paste("number of start rows: ", length(rawStartRows)))
+
   rawStartTimes <- data %>%
     filter(marker == eventStart) %>%
     select(t) %>%
-    distinct()
+    distinct() %>%
+    pull(t)
 
-  print(paste("start times: ", startTimes))
+  print(paste("start times: ", rawStartTimes))
+
+  rawEndRows <- data %>% as.data.frame() %>%
+    filter(marker == eventEnd) %>%
+    select(dataRow) %>%
+    distinct() %>%
+    pull(dataRow)
+
+  print(paste("end rows: ", rawEndRows))
+  ### print number of end rows
+  print(paste("number of end rows: ", length(rawEndRows)))
 
   rawEndTimes <- data %>%
     filter(marker == eventEnd) %>%
     select(t) %>%
-    distinct()
-
-  print(paste("end times: ", endTimes))
-
-
-  ## to get the start times with a lead, need to identify the row if the start time is in the t column, then subtract the lead from the row number. Then filter the data again with the new row number/t value.
+    distinct() %>%
+    pull(t)
 
 
+  print(paste("end times: ", rawEndTimes))
 
 
-  startTimes<- as.numeric(startTimes$t)
-  endTimes<- as.numeric(endTimes$t)
+if(lead > 0 | lag > 0){
+
+  print(paste("lead: ", lead, " samples"))
+  print(paste("lag: ", lag, " samples"))
+  print("calculating start and end times with lead and lag")
+
+  ## to get the start times with a lead, we need to subtract the lead from the start rows
+
+  startRows <- rawStartRows - lead
+
+  ## print new start rows
+
+  print(paste("start rows with lead: ", startRows))
+
+  ## now we need to identify the start times that correspond to the start rows
+
+  startTimes <- data %>%
+    filter(dataRow %in% startRows) %>%
+    select(t) %>%
+    distinct() %>%
+    pull(t)
+
+  ## to get the end times with a lag, we need to add the lag to the end rows
+
+  endRows <- rawEndRows + lag
+
+  ## print new end rows
+
+  print(paste("end rows with lag: ", endRows))
+
+  ## now we need to identify the end times that correspond to the end rows
+
+  endTimes <- data %>%
+    filter(dataRow %in% endRows) %>%
+    select(t) %>%
+    distinct() %>%
+    pull(t)
+
+
+  print(paste("start rows with lead: ", startRows))
+  print(paste("start times with lead: ", startTimes))
+  print(paste("end rows with lag: ", endRows))
+  print(paste("end times with lag: ", endTimes))
+
+} else {
+
+  startTimes <- rawStartTimes
+  endTimes <- rawEndTimes
+
+}
+
 
   if (length(startTimes) != length(endTimes)) {
     print("Error: there is a mismatch in the number of start and end markers")
   } else {
 
-    timeData <- cbind(start = as.numeric(startTimes),end = as.numeric(endTimes)) %>% as.data.frame()
+    print("start and end markers match")
+
+    # combine the start and end times into a data frame
+
+
+    timeData <-cbind(start = startTimes, end = endTimes) %>%
+      as.data.frame()
+
+
     ntrials <- length(timeData$start) %>% as.numeric()
     print(paste("number of trials: ", ntrials))
 
