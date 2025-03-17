@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_delta_od.R
 \name{create_delta_od}
 \alias{create_delta_od}
-\title{Create delta od values from nirs data}
+\title{Create change in optical density values from nirs data}
 \usage{
 create_delta_od(nirsData, reference = "baseline")
 }
@@ -15,7 +15,7 @@ create_delta_od(nirsData, reference = "baseline")
 A data frame containing the Delta OD values for each optode, for each frequency. The column names will be delta_od_730 and delta_od_850.
 }
 \description{
-This function takes in nirs data and creates Delta OD (change in oxygenation density) values for each optode. This is a preliminary step before calculating HbO and HbR values, using the MBLL law. It can use a reference baseline or the average of all of the nirs values (for that optode) as a reference. By default, it will use the baseline values from the COBI data file import, as these should have been stored in the nirs data object when the data was imported. This conversion is based on the two frequency values of the nirs data being 730nm and 850nm, which should also be specified in the nirs data object. The output will be a data frame containing the Delta OD values for each optode, for each frequency. The column names will be delta_od_730 and delta_od_850.
+This function takes in nirs data and creates Delta OD (change in optical density) values for each optode. This is based on the formula \code{deltaOD = -log10(I_t/IRef)}. This is a preliminary step before calculating HbO and HbR values, using the MBLL law, using the \code{\link{apply_mbll}} function. It can use a reference baseline or the average of all of the nirs values (for that optode) as a reference. By default, it will use the baseline values from the COBI data file import, as these should have been stored in the nirs data object when the data was imported. This conversion is based on the two frequency values of the nirs data being 730nm and 850nm, which should also be specified in the nirs data object. The output will be a data frame containing the Delta OD values for each optode, for each frequency. The column names will be delta_od_730 and delta_od_850.
 }
 \examples{
 \dontrun{
