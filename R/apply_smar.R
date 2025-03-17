@@ -17,7 +17,7 @@
 #' @import dplyr
 #' @import zoo
 #' @return A dataframe with the sliding window Motion Artifact Removal algorithm applied to the data. Original data is preserved with the suffix "_pre_smar" added to the column names. The nirValue column is replaced with the smoothed values.
-#' @export
+#' This function is not ready for production use. It is a work in progress.
 
 apply_smar <- function(nirsData, window_size_seconds = 5, sample_rate = 2, upper_threshold = 0.025, lower_threshold = 0.003, preserve_all = T) {
   nirsData <-  nirsData %>%
@@ -64,7 +64,7 @@ apply_smar <- function(nirsData, window_size_seconds = 5, sample_rate = 2, upper
     group_by(optode, freq) %>%
     mutate(
       # Calculate the centered average
-      nirValue_final = zoo::rollmean(nirValue_pre_smooth, window_size_samples, fill = NA, align = "center")
+      nirValue_final = zoo::rollmean(nirValue_pre_smooth, window_size_samples, align = "center")
     ) %>%
     mutate(nirValue_final = ifelse(is.na(nirValue_final), nirValue_pre_smooth, nirValue_final)) %>%
     ungroup()
