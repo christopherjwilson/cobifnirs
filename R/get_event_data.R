@@ -26,20 +26,20 @@ get_event_data <- function(data, eventStart, eventEnd, eventName, lead = 0, lag 
   # incorporate the lead parameter and select the t column that is lag points before the start marker
 
   rawStartRows <- data %>% as.data.frame() %>%
-    filter(marker == eventStart) %>%
-    select(dataRow) %>%
-    distinct() %>%
-    pull(dataRow)
+    dplyr::filter(marker == eventStart) %>%
+    dplyr::select(dataRow) %>%
+    dplyr::distinct() %>%
+    dplyr::pull(dataRow)
 
   print(paste("start rows: ", rawStartRows))
   ### print number of start rows
   print(paste("number of start rows: ", length(rawStartRows)))
 
   rawStartTimes <- data %>%
-    filter(marker == eventStart) %>%
-    select(t) %>%
-    distinct() %>%
-    pull(t)
+    dplyr::filter(marker == eventStart) %>%
+    dplyr::select(t) %>%
+    dplyr::distinct() %>%
+    dplyr::pull(t)
 
   print(paste("start times: ", rawStartTimes))
 
@@ -54,10 +54,10 @@ get_event_data <- function(data, eventStart, eventEnd, eventName, lead = 0, lag 
   print(paste("number of end rows: ", length(rawEndRows)))
 
   rawEndTimes <- data %>%
-    filter(marker == eventEnd) %>%
-    select(t) %>%
-    distinct() %>%
-    pull(t)
+    dplyr::filter(marker == eventEnd) %>%
+    dplyr::select(t) %>%
+    dplyr::distinct() %>%
+    dplyr::pull(t)
 
 
   print(paste("end times: ", rawEndTimes))
@@ -80,10 +80,10 @@ if(lead > 0 | lag > 0){
   ## now we need to identify the start times that correspond to the start rows
 
   startTimes <- data %>%
-    filter(dataRow %in% startRows) %>%
-    select(t) %>%
-    distinct() %>%
-    pull(t)
+    dplyr::filter(dataRow %in% startRows) %>%
+    dplyr::select(t) %>%
+    dplyr::distinct() %>%
+    dplyr::pull(t)
 
   ## to get the end times with a lag, we need to add the lag to the end rows
 
@@ -96,10 +96,10 @@ if(lead > 0 | lag > 0){
   ## now we need to identify the end times that correspond to the end rows
 
   endTimes <- data %>%
-    filter(dataRow %in% endRows) %>%
-    select(t) %>%
-    distinct() %>%
-    pull(t)
+    dplyr::filter(dataRow %in% endRows) %>%
+    dplyr::select(t) %>%
+    dplyr::distinct() %>%
+    dplyr::pull(t)
 
 
   print(paste("start rows with lead: ", startRows))
@@ -135,7 +135,7 @@ if(lead > 0 | lag > 0){
     getData <- function(i, timeData, data){
 
 
-      trial_data <- data %>% filter(t >= timeData$start[[i]] & t <= timeData$end[[i]]) %>% mutate(trial = i, event = eventName)
+      trial_data <- data %>% dplyr::filter(t >= timeData$start[[i]] & t <= timeData$end[[i]]) %>% dplyr::mutate(trial = i, event = eventName)
 
 
 
