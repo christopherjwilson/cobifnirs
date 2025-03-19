@@ -44,10 +44,10 @@ get_event_data <- function(data, eventStart, eventEnd, eventName, lead = 0, lag 
   print(paste("start times: ", rawStartTimes))
 
   rawEndRows <- data %>% as.data.frame() %>%
-    filter(marker == eventEnd) %>%
-    select(dataRow) %>%
-    distinct() %>%
-    pull(dataRow)
+    dplyr::filter(marker == eventEnd) %>%
+    dplyr::select(dataRow) %>%
+    dplyr::distinct() %>%
+    dplyr::pull(dataRow)
 
   print(paste("end rows: ", rawEndRows))
   ### print number of end rows
