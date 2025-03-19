@@ -12,7 +12,7 @@
 #' }
 
 # this function adds brodmann's areas to the data, based on the optode location
-addBrodmanns <- function(nirsData) {
+add_brodmanns <- function(nirsData) {
   data <-  nirsData %>% mutate(hemi = ifelse(optode < 9, "left", "right"))
   data <- data %>% mutate(region = case_when((optode == 1 | optode == 15) ~ "BA44",
                                              (optode == 2 | optode == 16) ~ "BA45",
