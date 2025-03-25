@@ -4,7 +4,7 @@
 #'The function will look for matching start and end markers (so will assume that each event has a start and end marker). It will then extract the data between the start and end markers and return a list of data frames, one for each event. The data frames will have a trial column that specifies the event number. The function will also add an event_name to the data that specifies the event name (inputted as a parameter).
 #'@param data A data frame with the fnirs data. It should have been imported using the \code{\link{import_nirs}} function and had markers added using the \code{\link{add_markers}} function.
 #'@param eventStart The name of the start marker for discrete events/trials in the data. This should be a string and it should match a value in the marker column.
-#'@param eventEnd The name of the end marker for discrete events/trials in the data. This should be a string and it should match a value in the marker column.
+#'@param eventEnd The name of the end marker for discrete events/trials in the data. This should be a string and it should match a value in the marker column. If you do not set an end marker, the function will assume that the end marker is the same as the start marker. This is useful if you have a single marker for each event. If you do not set an end marker, you will need to set the lead and lag parameters. If you do not set the lead and lag parameters for a single marker event, the function will default to a lead of 6 samples and a lag of 10 samples. To calculate seconds, divide by the sample rate (e.g. at 2 Hz would be a value of 10 for 5 seconds).
 #'@param eventName The name of the block. This is for the convenience of the researcher, to be able to distinguish between different blocks of trials, or different tasks. This should be a string and will be added as a column to the data.
 #'@param lead The number of data points to lead the start marker by. This is useful because of the lead/lag of fnirs responses to events. The default is 0.  To calculate seconds, divide by the sample rate (e.g. at 2 Hz would be a value of 10 for 5 seconds).
 #'@param lag The number of data points to lag the end marker by. This is useful because of the lead/lag of fnirs responses to events. The default is 0. To calculate seconds, divide by the sample rate (e.g. at 2 Hz would be a value of 10 for 5 seconds).
@@ -12,11 +12,32 @@
 #'@import dplyr
 #'@export
 
-get_event_data <- function(data, eventStart, eventEnd, eventName, lead = 0, lag = 0) {
+get_event_data <- function(data, eventStart, eventEnd = NULL, eventName, lead = 0, lag = 0) {
 
   data$t <- as.numeric(data$t)
   data$marker <- as.character(data$marker)
   data$dataRow <- as.numeric(data$dataRow)
+
+  ## if the end marker is not specified, then the function will assume that the end marker is the same as the start marker
+
+  if(is.null(eventEnd)){
+    eventEnd <- eventStart
+    print(paste("end marker not set, defaulting to: ", eventEnd))
+    print("Assuming you want to check for a single marker")
+    # this means that lead and lag must be set, so we will default to a lead of 3 and a lag of 5 if the lead and lag are not set
+
+    if(lead == 0){
+      print("lead not set, defaulting to 6 samples")
+      lead <- 6
+    }
+
+    if(lag == 0){
+      print("lag not set, defaulting to 10 samples")
+      lag <- 10
+    }
+
+
+  }
 
   print(paste("event start marker: ", eventStart))
   print(paste("event end marker: ", eventEnd))
@@ -42,6 +63,9 @@ get_event_data <- function(data, eventStart, eventEnd, eventName, lead = 0, lag 
     dplyr::pull(t)
 
   print(paste("start times: ", rawStartTimes))
+
+
+
 
   rawEndRows <- data %>% as.data.frame() %>%
     dplyr::filter(marker == eventEnd) %>%
