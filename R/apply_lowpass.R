@@ -5,8 +5,8 @@
 #'@param w (numeric) The window of the lowpass filter. The default is 20.
 #'@return A dataframe with the lowpass filter applied to the data. Original data is preserved with the suffix "_pre_lp" added to the column names. The nirValue column is replaced with the lowpass filtered values.
 #'@import dplyr
-#'@importfrom gsignal fir1
-#'@importfrom gsignal filter_zi
+#'@importFrom gsignal fir1
+#'@importFrom gsignal filter_zi
 #' @export
 #'@examples
 #' \dontrun{

@@ -4,14 +4,14 @@
 \alias{get_event_data}
 \title{Get event data using markers}
 \usage{
-get_event_data(data, eventStart, eventEnd, eventName, lead = 0, lag = 0)
+get_event_data(data, eventStart, eventEnd = NULL, eventName, lead = 0, lag = 0)
 }
 \arguments{
 \item{data}{A data frame with the fnirs data. It should have been imported using the \code{\link{import_nirs}} function and had markers added using the \code{\link{add_markers}} function.}
 
 \item{eventStart}{The name of the start marker for discrete events/trials in the data. This should be a string and it should match a value in the marker column.}
 
-\item{eventEnd}{The name of the end marker for discrete events/trials in the data. This should be a string and it should match a value in the marker column.}
+\item{eventEnd}{The name of the end marker for discrete events/trials in the data. This should be a string and it should match a value in the marker column. If you do not set an end marker, the function will assume that the end marker is the same as the start marker. This is useful if you have a single marker for each event. If you do not set an end marker, you will need to set the lead and lag parameters. If you do not set the lead and lag parameters for a single marker event, the function will default to a lead of 6 samples and a lag of 10 samples. To calculate seconds, divide by the sample rate (e.g. at 2 Hz would be a value of 10 for 5 seconds).}
 
 \item{eventName}{The name of the block. This is for the convenience of the researcher, to be able to distinguish between different blocks of trials, or different tasks. This should be a string and will be added as a column to the data.}
 
