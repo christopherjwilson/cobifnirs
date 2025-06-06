@@ -14,43 +14,61 @@
 #' signalPlot <- signal_plot(nirsData)
 #'
 #' # To generate a signal plot from multiple NIRS files which have been imported using the import_nirs function
-#' nirsData <- lapply(nirsFiles, import_nirs, folder = myPath)
+#' nirsData <- lapply(nirsFiles, import_nirs, path = myPath)
 #' signalPlot <- lapply(nirsData, signal_plot)
 #'}
 #'
 #' @seealso \code{\link{import_nirs}}
 #'
 
-signal_plot <- function(nirsData) {
+signal_plot <- function(nirsData, path = NULL){
 
   print("creating plot...")
   print("if there are markers in the data, a vertical line will be added to the plot at the marker time")
 
   # if there is a marker column in the data, add a vertical line to the plot at the marker time
 
-if("nirValue" %in% colnames(nirsData)){
-  p <- nirsData %>% ggplot(aes(x = t, y = nirValue, color = freq)) +
-    geom_line() +
-    ggnewscale::new_scale_color() +
-    {if("marker" %in% colnames(nirsData))
-    geom_vline(data = nirsData %>% filter(!is.na(marker)), aes(xintercept = t, linetype  = marker, colour = marker), alpha = 0.1)} +
-    facet_wrap(.~ optode) +
-    theme_minimal()
-} else if ("hbo" %in% colnames(nirsData)){
+  if("nirValue" %in% colnames(nirsData)){
+    p <- nirsData %>% ggplot(aes(x = t, y = nirValue, color = freq)) +
+      geom_line() +
+      ggnewscale::new_scale_color() +
+      {if("marker" %in% colnames(nirsData))
+        geom_vline(data = nirsData %>% filter(!is.na(marker)), aes(xintercept = t, linetype  = marker, colour = marker), alpha = 0.1)} +
+      facet_wrap(.~ optode) +
+      theme_minimal() +
+      {if("participantID" %in% colnames(nirsData))
+        ggtitle(paste("Participant ID: ", unique(nirsData$participantID)))}
 
- nirsData <- nirsData %>%
-    tidyr::pivot_longer(cols = c("hbo", "hbr"), names_to = "type", values_to = "value")
+    if (!is.null(path)){
+      print("saving plot...")
+      fn <- nirsData$participantID[1]
+      ggsave(filename = paste0(path, "/",fn,".png" ), plot = p, device = "png", width = 10, height = 10,  bg = "white")
+    }
 
 
-  p <- nirsData %>% ggplot(aes(x = t, y = value, color = type)) +
-    geom_line() +
-    ggnewscale::new_scale_color() +
-    {if("marker" %in% colnames(nirsData))
-      geom_vline(data = nirsData %>% filter(!is.na(marker)), aes(xintercept = t, linetype  = marker, colour = marker), alpha = 0.1)} +
-    facet_wrap(.~ optode) +
-    theme_minimal()
-}
+  } else if ("hbo" %in% colnames(nirsData)){
+
+    nirsData <- nirsData %>%
+      tidyr::pivot_longer(cols = c("hbo", "hbr"), names_to = "type", values_to = "value")
+
+
+    p <- nirsData %>% ggplot(aes(x = t, y = value, color = type)) +
+      geom_line() +
+      ggnewscale::new_scale_color() +
+      {if("marker" %in% colnames(nirsData))
+        geom_vline(data = nirsData %>% filter(!is.na(marker)), aes(xintercept = t, linetype  = marker, colour = marker), alpha = 0.1)} +
+      facet_wrap(.~ optode) +
+      theme_minimal() +
+      {if("participantID" %in% colnames(nirsData))
+        ggtitle(paste("Participant ID: ", unique(nirsData$participantID)))}
+
+    if (!is.null(path)){
+      print("saving plot...")
+      fn <- nirsData$participantID[1]
+      ggsave(filename = paste0(path, "/",fn,".png" ), plot = p, device = "png", width = 10, height = 10,  bg = "white")
+    }
+  }
   print("plot created")
 
-return(p)
+  return(p)
 }
