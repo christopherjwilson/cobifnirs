@@ -5,33 +5,19 @@ Cobi fNIRS
 
 For importing and working with fNIRS data from COBI Studio in R.
 
-## Current status (April 2024)
+## Current Status: Beta (v0.1.0)
+**Date:** February 2026
 
-This package is currently in early development. Use with caution.
-
-## Current features
-
-- Importing fNIRS data from COBI Studio (.nir) into a data frame
-- Adding markers to the data frame from the COBI Studio markers file
-  (.mrk)
-- Creating a summary report of signal quality (weak and saturated
-  channels)
-- Removing the ambient light signal from the data file
-- Removing selected channels from the data file (e.g., channels with
-  poor signal quality)
-- Creating delta OD (change in optical density) values from the raw
-  light intensity data
-
-## Planned features (in progress)
-
-- Converting delta OD values to HbO and HbR values (i.e., oxy data)
-  using the modified Beer-Lambert (MBLL) law
-- Adding Brodmann areas to the data frame based on the channel locations
-- Plotting the data (x = time, y = HbO/HbR values) for each channel
-- Plotting the data (showing activation in the brain areas)
-- Filtering the data using a low-pass filter
-- Applying a SMAR (i.e., sliding window motion artifact rejection)
-  filter to the data
+## Current Features
+* **Import:** Robustly handles COBI `.nir` files (including ambient channel isolation).
+* **Preprocessing:**
+  * **Artifact Correction:** IQR-based sliding window motion artifact rejection (SMAR).
+  * **Filtering:** Zero-phase Butterworth low-pass filter.
+  * **Quality Check:** Signal quality reports (weak/saturated channels).
+* **Concentration:** Modified Beer-Lambert Law (MBLL) conversion to HbO/HbR ($\mu M$).
+* **Analysis:**
+  * **GLM:** General Linear Model with stick functions and canonical HRF.
+  * **Statistics:** Beta extraction and condition comparisons.
 
 ## Installation
 
@@ -41,6 +27,28 @@ You can install the development version of cobifnirs from [GitHub]()
 
 # install.packages("devtools")
 devtools::install_github("christopherjwilson/cobifnirs")
+```
+
+## Quick Start: Analysis Pipeline
+
+```r
+# 1. Import & Preprocess
+data <- import_nirs("test.nir") %>%
+  add_markers() %>%
+  remove_ambient() %>%
+  apply_smar(iqr_multiplier = 1.5) %>%  # Artifact Correction
+  apply_lowpass(cutoff = 0.1) %>%       # Filtering
+  create_delta_od()
+
+# 2. Calculate Concentration (Uses defaults: Gratzer, DPF=6)
+oxy_data <- apply_mbll(data)
+
+# 3. Run GLM Statistics
+# Define which markers represent trial starts
+conditions <- c("Start_Trial", "Condition_A")
+glm_stats <- calculate_glm(oxy_data, conditions = conditions)
+
+print(glm_stats)
 ```
 
 ## Importing .nir files into R

@@ -1,48 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/404.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/index.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/reference/add_markers.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/reference/apply_mbll.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/reference/create_delta_od.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/reference/create_delta_ods.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/reference/get_ext_values.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/reference/import_nirs.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/reference/remove_ambient.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/reference/remove_channels.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/reference/signal_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://christopherjwilson.github.io/cobifnirs/reference/signal_summary.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/404.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/authors.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/index.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/LICENSE.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/add_brodmanns.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/add_markers.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/apply_lowpass.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/apply_mbll.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/apply_smar.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/calculate_glm.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/create_delta_od.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/create_delta_ods.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/create_regressor.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/get_canonical_hrf.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/get_event_data.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/get_ext_values.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/import_nirs.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/index.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/remove_ambient.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/remove_channels.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/signal_plot.html</loc></url>
+<url><loc>https://christopherjwilson.github.io/cobifnirs/reference/signal_summary.html</loc></url>
 </urlset>
+
