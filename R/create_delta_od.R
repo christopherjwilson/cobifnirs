@@ -37,6 +37,19 @@ create_delta_od <- function(nirsData, reference = "baseline"){
 
     delta_od_all <- left_join(delta_od_730,delta_od_850)
 
+    # restore markers
+
+    if("marker" %in% colnames(nirsData)){
+      # Get a clean map of Time -> Marker
+      marker_map <- nirsData %>%
+        select(t, marker) %>%
+        distinct()
+
+      # Join it back to the result
+      delta_od_all <- delta_od_all %>%
+        left_join(marker_map, by = "t")
+    }
+
   } else {
 
     # if there is no reference baseline, or if we don't want to use that right now, we can use the average of all of the nirs values as a reference.
@@ -56,6 +69,18 @@ create_delta_od <- function(nirsData, reference = "baseline"){
 
     delta_od_all <- left_join(delta_od_730,delta_od_850)
 
+    # restore markers
+
+    if("marker" %in% colnames(nirsData)){
+      # Get a clean map of Time -> Marker
+      marker_map <- nirsData %>%
+        select(t, marker) %>%
+        distinct()
+
+      # Join it back to the result
+      delta_od_all <- delta_od_all %>%
+        left_join(marker_map, by = "t")
+    }
   }
 
   delta_od_all

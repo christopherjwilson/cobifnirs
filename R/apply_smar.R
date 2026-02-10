@@ -19,6 +19,9 @@ apply_smar <- function(nirsData, iqr_multiplier = 1.5) {
   corrected_data <- nirsData %>%
     group_by(optode, freq) %>%
     mutate(
+      # save original data for audit trail
+      nirValue_pre_smar = nirValue,
+
       # Calculate velocity (difference between samples)
       velocity = c(0, diff(nirValue)),
 
