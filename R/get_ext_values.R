@@ -7,7 +7,8 @@
 #' @return a matrix with the extinction coefficients of HbO and HbR at the two wavelengths, which can be used with the `applyMBLL` function.
 #' @export
 
-get_ext_values<- function(lambda1 = 730, lambda2 = 850, table = "wray"){
+get_ext_values<- function(lambda1 = 730, lambda2 = 850, table = "gratzer"){
+  # gratzer is used by default to match the values used to conver from raw nir to the values in the default COBI oxy file, but the other tables can be used if desired. The extinction coefficients are taken from the literature and are based on the wavelength values.
 
 library(dplyr)
 

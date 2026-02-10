@@ -4,7 +4,7 @@
 \alias{get_ext_values}
 \title{Get the extinction coefficients of HbO and HbR at the two wavelengths.}
 \usage{
-get_ext_values(lambda1 = 730, lambda2 = 850, table = "wray")
+get_ext_values(lambda1 = 730, lambda2 = 850, table = "gratzer")
 }
 \arguments{
 \item{lambda1}{The first wavelength.}

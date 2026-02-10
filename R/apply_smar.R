@@ -1,88 +1,54 @@
-#' @title Apply a Sliding Window Motion Artifact Removal algorithm to the fnirs data.
-#' @description This function will apply a sliding window Motion Artifact Removal algorithm to the fnirs data. The window size, sample rate, and thresholds can be specified in the function.
-#'
-#' There are two steps to the algorithm:
-#'
-#' 1. Identify artifacts based on thresholds. The differences between consecutive values are calculated, and if the difference is greater than the upper threshold or less than the lower threshold, the data point is identified as an artifact. It is then replaced with an interpolated value.
-#'
-#' 2. Apply simple smoothing to the data using a manual sliding window - centered average. The centered average is calculated for each data point using the window size specified.
-#'
-#' The output is a dataframe with the sliding window Motion Artifact Removal algorithm applied to the data, and the original data is preserved with the suffix "_pre_smar" added to the column name.
-#' @param nirsData (dataframe)  NIRS data that has been imported using the \code{\link{import_nirs}} function.
-#' @param window_size_seconds (numeric) The window size in seconds for the sliding window. The default is 10 (5sec at 2Hz).
-#' @param sample_rate (numeric) The sample rate of the data. The default is 2.
-#' @param upper_threshold (numeric) The upper threshold for identifying artifacts. The default is 0.025.
-#' @param lower_threshold (numeric) The lower threshold for identifying artifacts. The default is 0.003.
-#' @param perserve_all (logical) If TRUE, each step of the process will be preserved in the data, with _pre_smar (original data) and _pre_smooth (artifacts removed, before overall smoothing) added to the column name. The default is FALSE.
+#' @title Apply Motion Artifact Correction (Despike & Interpolate)
+#' @description Identifies motion artifacts (spikes) based on the rate of change
+#' relative to the signal's standard deviation (or IQR). It replaces these spikes
+#' with linear interpolation, preserving the signal timing without aggressive smoothing.
+#' @param nirsData (dataframe) NIRS data imported via import_nirs().
+#' @param iqr_multiplier (numeric) How many Interquartile Ranges (IQR) above the norm counts as a spike?
+#' Default is 1.5 (standard statistical outlier definition). Higher = less sensitive.
+#' @return Dataframe with artifacts removed and interpolated.
 #' @import dplyr
-#' @import zoo
-#' @return A dataframe with the sliding window Motion Artifact Removal algorithm applied to the data. Original data is preserved with the suffix "_pre_smar" added to the column names. The nirValue column is replaced with the smoothed values.
-#' This function is not ready for production use. It is a work in progress.
+#' @importFrom zoo na.approx
+#' @export
+apply_smar <- function(nirsData, iqr_multiplier = 1.5) {
 
-apply_smar <- function(nirsData, window_size_seconds = 5, sample_rate = 2, upper_threshold = 0.025, lower_threshold = 0.003, preserve_all = T) {
-  nirsData <-  nirsData %>%
-    dplyr::group_by(optode, freq) %>%
-    dplyr::mutate(nirValue_pre_smar = nirValue) %>%
-    dplyr::ungroup()
+  print(paste0("Running Artifact Correction (IQR Multiplier: ", iqr_multiplier, ")"))
 
-
-  # Calculate window size in samples
-  window_size_samples <- window_size_seconds * sample_rate
-
-  # Group data by optode and frequency
-  corrected_nirs_data <- nirsData %>%
+  # 1. Calculate Rate of Change (Derivative)
+  # We look at how fast the signal is changing. Real brain signals are slow;
+  # artifacts are instantaneous jumps.
+  corrected_data <- nirsData %>%
     group_by(optode, freq) %>%
     mutate(
-      # Calculate differences within each group
-      diffs = nirValue - lag(nirValue),
+      # Calculate velocity (difference between samples)
+      velocity = c(0, diff(nirValue)),
 
-      # Identify artifacts based on thresholds
-      artifact = !is.na(diffs) & (abs(diffs) > upper_threshold | abs(diffs) < lower_threshold),
+      # 2. Define Dynamic Thresholds (Robust Statistics)
+      # We use IQR (Interquartile Range) instead of SD because huge artifacts
+      # distort SD, making the threshold too high to catch them.
+      vel_q1 = quantile(velocity, 0.25, na.rm = TRUE),
+      vel_q3 = quantile(velocity, 0.75, na.rm = TRUE),
+      vel_iqr = vel_q3 - vel_q1,
 
-      # Replace artifacts with interpolated values (example: linear interpolation) only if artifact is TRUE and diffs is not NA
-      nirValue_pre_smooth = ifelse(
-        artifact & !is.na(diffs),
-        approx(t, nirValue, xout = t[artifact] - 1/sample_rate)$y,  # Adjust time points
-        nirValue
-      )
+      # Define cutoff bounds
+      lower_limit = vel_q1 - (iqr_multiplier * vel_iqr),
+      upper_limit = vel_q3 + (iqr_multiplier * vel_iqr),
 
+      # 3. Identify Artifacts
+      # If velocity jumps outside these bounds, it's a spike.
+      is_artifact = (velocity < lower_limit) | (velocity > upper_limit),
 
+      # 4. Interpolate
+      # Step A: Set artifacts to NA
+      nirValue_clean = ifelse(is_artifact, NA, nirValue),
 
+      # Step B: Linear Interpolation to fill NAs
+      # na.approx fills the gaps by drawing a line between the good points
+      nirValue = zoo::na.approx(nirValue_clean, na.rm = FALSE, rule = 2) # rule=2 keeps ends
     ) %>%
-    mutate(
-      # if nirValue_pre_smooth is NA, replace with nirValue
 
-      nirValue_pre_smooth = ifelse(is.na(nirValue_pre_smooth), nirValue, nirValue_pre_smooth)
-
-
-    ) %>%
+    # Cleanup
+    select(-velocity, -vel_q1, -vel_q3, -vel_iqr, -lower_limit, -upper_limit, -is_artifact, -nirValue_clean) %>%
     ungroup()
 
-
-#
-  corrected_nirs_data <- corrected_nirs_data %>%
-    group_by(optode, freq) %>%
-    mutate(
-      # Calculate the centered average
-      nirValue_final = zoo::rollmean(nirValue_pre_smooth, window_size_samples, align = "center")
-    ) %>%
-    mutate(nirValue_final = ifelse(is.na(nirValue_final), nirValue_pre_smooth, nirValue_final)) %>%
-    ungroup()
-
-## final value replaces the original value
-
-  corrected_nirs_data <- corrected_nirs_data %>%
-    mutate(nirValue = nirValue_final) %>%
-    select(-nirValue_final)
-
-  if (preserve_all) {
-    return(corrected_nirs_data)
-  } else {
-    corrected_nirs_data <- corrected_nirs_data %>%
-      select(-diffs, -nirValue_pre_smooth, -artifact)
-  }
-
-
-
-  return(corrected_nirs_data)
+  return(corrected_data)
 }

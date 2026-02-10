@@ -2,26 +2,21 @@
 % Please edit documentation in R/apply_lowpass.R
 \name{apply_lowpass}
 \alias{apply_lowpass}
-\title{Apply lowpass filter to fnirs data.}
+\title{Apply Lowpass Filter (Zero-Phase)}
 \usage{
-apply_lowpass(nirData, freq = 0.1, w = 20)
+apply_lowpass(nirData, cutoff = 0.1, order = 4)
 }
 \arguments{
-\item{freq}{(numeric) The frequency of the lowpass filter. The default is 0.1 (10Hz).}
+\item{nirData}{(dataframe) NIRS data imported via import_nirs().}
 
-\item{w}{(numeric) The window of the lowpass filter. The default is 20.}
+\item{cutoff}{(numeric) The cutoff frequency in Hz. Default is 0.1 Hz.}
 
-\item{oxyData}{(dataframe)  NIRS data that has been imported using the \code{\link{import_nirs}} function.}
+\item{order}{(numeric) The order of the filter. Default is 4 (standard for fNIRS).}
 }
 \value{
-A dataframe with the lowpass filter applied to the data. Original data is preserved with the suffix "_pre_lp" added to the column names. The nirValue column is replaced with the lowpass filtered values.
+Dataframe with filtered values. Original data is saved as *_pre_lp.
 }
 \description{
-This function will apply a lowpass filter to the fnirs data. The frequency of the filter and the window can be specified in the function. The output is a dataframe with the lowpass filter applied to the data, and the original data is preserved with the suffix "_pre_lp" added to the column names. The function uses a fir1 filter from the gsignal package, with a filter length of 2. The filter is scaled by dividing by the sum of the coefficients, and the starting point values are created using the filter_zi function. The filter is applied to the data, and the delay is calculated using the grpdelay function. The delay is then compensated for by shifting the data. The output is a dataframe with the lowpass filter applied to the data.
-}
-\examples{
-\dontrun{
-# Assuming that the fnirs data has been imported using the \code{\link{import_nirs}} function.
-apply_lowpass(nirData, freq = 0.1, w = 20)
-}
+Applies a zero-phase Butterworth lowpass filter to the data.
+Uses forward-backward filtering (filtfilt) to prevent any phase delay or shift.
 }

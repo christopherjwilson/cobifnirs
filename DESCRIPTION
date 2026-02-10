@@ -8,13 +8,16 @@ Description: This package provides functions to import and process fNIRS data fr
 License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.3
 Imports: 
     dplyr,
     janitor,
     stringr,
     tibble,
-    readr
+    readr,
+    stats,
+    ggnewscale,
+    gsignal
 URL: https://github.com/christopherjwilson/cobifnirs, https://christopherjwilson.github.io/cobifnirs/
 BugReports: https://github.com/christopherjwilson/cobifnirs/issues
 Suggests: 

@@ -1,61 +1,45 @@
-#'@title Apply lowpass filter to fnirs data.
-#'@description This function will apply a lowpass filter to the fnirs data. The frequency of the filter and the window can be specified in the function. The output is a dataframe with the lowpass filter applied to the data, and the original data is preserved with the suffix "_pre_lp" added to the column names. The function uses a fir1 filter from the gsignal package, with a filter length of 2. The filter is scaled by dividing by the sum of the coefficients, and the starting point values are created using the filter_zi function. The filter is applied to the data, and the delay is calculated using the grpdelay function. The delay is then compensated for by shifting the data. The output is a dataframe with the lowpass filter applied to the data.
-#'@param oxyData (dataframe)  NIRS data that has been imported using the \code{\link{import_nirs}} function.
-#'@param freq (numeric) The frequency of the lowpass filter. The default is 0.1 (10Hz).
-#'@param w (numeric) The window of the lowpass filter. The default is 20.
-#'@return A dataframe with the lowpass filter applied to the data. Original data is preserved with the suffix "_pre_lp" added to the column names. The nirValue column is replaced with the lowpass filtered values.
-#'@import dplyr
-#'@importFrom gsignal fir1
-#'@importFrom gsignal filter_zi
+#' @title Apply Lowpass Filter (Zero-Phase)
+#' @description Applies a zero-phase Butterworth lowpass filter to the data.
+#' Uses forward-backward filtering (filtfilt) to prevent any phase delay or shift.
+#' @param nirData (dataframe) NIRS data imported via import_nirs().
+#' @param cutoff (numeric) The cutoff frequency in Hz. Default is 0.1 Hz.
+#' @param order (numeric) The order of the filter. Default is 4 (standard for fNIRS).
+#' @return Dataframe with filtered values. Original data is saved as *_pre_lp.
+#' @import dplyr
+#' @importFrom gsignal butter filtfilt
 #' @export
-#'@examples
-#' \dontrun{
-#' # Assuming that the fnirs data has been imported using the \code{\link{import_nirs}} function.
-#' apply_lowpass(nirData, freq = 0.1, w = 20)
-#' }
+apply_lowpass <- function(nirData, cutoff = 0.1, order = 4) {
 
-apply_lowpass <- function(nirData, freq = 0.1, w = 20) {
+  # Estimate Sample Rate (fs)
+  # We calculate this dynamically to be safe
+  timestamps <- sort(unique(nirData$t))
+  fs <- 1 / mean(diff(timestamps))
 
-  fs = 2
-  h <- gsignal::fir1(w, freq/(fs / 2), "low") # create filter
+  # Design Butterworth Filter
+  # Wn = cutoff / (fs/2) [Normalized frequency]
+  Wn <- cutoff / (fs / 2)
 
+  # Check for valid Nyquist
+  if (Wn >= 1) {
+    stop("Cutoff frequency is too high for the sampling rate (must be < fs/2).")
+  }
 
-  hn <- h / sum(h) # scale the filter by dividing by the sum of coefficients
-  myzi <- gsignal::filter_zi(hn) # create the starting point values
+  # Create Filter Coefficients (Butterworth)
+  # This creates 'b' (numerator) and 'a' (denominator)
+  filt <- gsignal::butter(order, Wn, type = "low")
 
+  # Apply Filter (Zero-Phase)
+  # using filtfilt (Forward-Backward filtering)
+  print(paste0("Applying 4th-order Butterworth Lowpass at ", cutoff, "Hz (Zero-Phase)"))
 
-  #  save original nirsData
-
+  # Save original and overwrite 'nirValue' with filtered data
   nirData <- nirData %>%
     dplyr::group_by(optode, freq) %>%
-    dplyr::mutate(nirValue_pre_lp = nirValue) %>%
-    ungroup()
+    dplyr::mutate(
+      nirValue_pre_lp = nirValue,
+      nirValue = gsignal::filtfilt(filt, nirValue) # Automatic zero-phase
+    ) %>%
+    dplyr::ungroup()
 
-  # create the new filtered hbo and hbr values
-
-  nirData <- nirData %>%
-    dplyr::group_by(optode, freq) %>%
-    dplyr::mutate(lp_nir_value = unlist(gsignal::filter(hn,nirValue,myzi * nirValue[1])[1])) %>%
-    ungroup()
-
-
-  # find the filter delay so it can be compensated for
-  gd <- gsignal::grpdelay(hn)
-  delay <- mean(gd$gd)
-
-  # compensate for the delay
-  nirData <- nirData %>%
-    dplyr::group_by(optode, freq) %>%
-    dplyr::mutate(nirValue = c(lp_nir_value[(delay +1):length(lp_nir_value)], rep(NA, delay)) ) %>%
-    ungroup()
-
-
-
-  # remove the uncompensated value
-
-  nirData <- nirData %>%
-    dplyr::select(-lp_nir_value, -lp_nir_value)
-
-  nirData
-
+  return(nirData)
 }
