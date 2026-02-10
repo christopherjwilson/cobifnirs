@@ -1,6 +1,6 @@
 Package: cobifnirs
 Title: Import And Process fNIRS Data from COBI Studio in R
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person("Christopher", "Wilson", "J" , "christopher.wilson@tees.ac.uk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7155-0662"))
