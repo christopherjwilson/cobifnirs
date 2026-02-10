@@ -1,16 +1,46 @@
-#'@title Get event data using markers
-#'@description This function gets the fnirs data for events in the study by identifying start and end markers in the data. It is useful if you have set up the study with automated (serial port) markers that specify when events happen in the data. Before running this function, you should also run the \code{\link{add_markers}} function to bind the markers to the data.
+#' @title Epoch Data for Multi-Level Modeling (MLM)
+#' @description Extracts event-locked epochs (trials) from continuous fNIRS data.
+#' This function slices the data around specific markers (e.g., "Stimulus_A")
+#' to create a list of individual trials. This is the first step in preparing
+#' data for Block Averaging or Multi-Level Modeling.
 #'
-#'The function will look for matching start and end markers. It will then extract the data between the start and end markers and return a list of data frames, one for each event. You can specify a lead or lag value to extract data before or after the marker values. The data frames will have a trial column that specifies the event number. The function will also add an event_name to the data that specifies the event name (inputted as a parameter). If an end marker is not specified, the function will assume that the end marker is the same as the start marker. This is useful if you have a single marker for each event.
-#'@param data A data frame with the fnirs data. It should have been imported using the \code{\link{import_nirs}} function and had markers added using the \code{\link{add_markers}} function.
-#'@param eventStart The name of the start marker for discrete events/trials in the data. This should be a string and it should match a value in the marker column.
-#'@param eventEnd The name of the end marker for discrete events/trials in the data. This should be a string and it should match a value in the marker column. If you do not set an end marker, the function will assume that the end marker is the same as the start marker. This is useful if you have a single marker for each event. If you do not set an end marker, you will need to set the lead and lag parameters. If you do not set the lead and lag parameters for a single marker event, the function will default to a lead of 6 samples and a lag of 10 samples. To calculate seconds, divide by the sample rate (e.g. at 2 Hz would be a value of 10 for 5 seconds).
-#'@param eventName The name of the block. This is for the convenience of the researcher, to be able to distinguish between different blocks of trials, or different tasks. This should be a string and will be added as a column to the data.
-#'@param lead The number of data points to lead the start marker by. This is useful because of the lead/lag of fnirs responses to events. The default is 0.  To calculate seconds, divide by the sample rate (e.g. at 2 Hz would be a value of 10 for 5 seconds).
-#'@param lag The number of data points to lag the end marker by. This is useful because of the lead/lag of fnirs responses to events. The default is 0. To calculate seconds, divide by the sample rate (e.g. at 2 Hz would be a value of 10 for 5 seconds).
-#'@return A list of data frames, one for each event. Each data frame will have a trial column that specifies the event number and a block column that specifies the block name.
-#'@import dplyr
-#'@export
+#' @details
+#' The function identifies the start and end times of events based on markers.
+#' It allows for a "lead" (pre-stimulus baseline) and "lag" (post-stimulus response)
+#' to capture the full hemodynamic response. The output is a list of dataframes,
+#' where each dataframe represents one trial.
+#'
+#' @param data (dataframe) Continuous fNIRS data imported via \code{\link{import_nirs}}
+#' and containing a 'marker' column from \code{\link{add_markers}}.
+#' @param eventStart (character) The marker name indicating the start of the event (e.g., "Stimulus").
+#' @param eventEnd (character, optional) The marker name indicating the end of the event.
+#' If NULL (default), the function uses \code{lead} and \code{lag} to define a fixed-duration epoch.
+#' @param eventName (character) A label for this condition (e.g., "Condition_A") to be added to the output.
+#' @param lead (numeric) Number of samples *before* the start marker to include (e.g., for baseline correction).
+#' Default is 0. Calculate as: \code{Seconds * SampleRate}.
+#' @param lag (numeric) Number of samples *after* the end marker to include.
+#' Default is 0. Calculate as: \code{Seconds * SampleRate}.
+#'
+#' @return A list of dataframes, where each element is a single trial containing
+#' columns for time, data, trial number, and event name.
+#'
+#' @examples
+#' \dontrun{
+#' # Example: Extract 5s baseline (lead) and 25s response (lag) at 10Hz
+#' # Lead = 5s * 2Hz = 10 samples
+#' # Lag = 5s * 2Hz = 10 samples
+#'
+#' trials <- get_event_data(oxy_data,
+#'                          eventStart = "Stimulus_A",
+#'                          eventName = "Condition_A",
+#'                          lead = 10,
+#'                          lag = 10)
+#'
+#' # Combine into a single dataframe for MLM
+#' mlm_data <- dplyr::bind_rows(trials)
+#' }
+#' @import dplyr
+#' @export
 
 get_event_data <- function(data, eventStart, eventEnd = NULL, eventName, lead = 0, lag = 0) {
 

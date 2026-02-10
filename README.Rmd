@@ -22,6 +22,7 @@ For importing and working with fNIRS data from COBI Studio in R.
   * **Quality Check:** Signal quality reports (weak/saturated channels).
 * **Concentration:** Modified Beer-Lambert Law (MBLL) conversion to HbO/HbR ($\mu M$).
 * **Analysis:**
+  * **MLM:** Epoch data extraction for multilevel modelling (requires baseline correction)
   * **GLM:** General Linear Model with stick functions and canonical HRF.
   * **Statistics:** Beta extraction and condition comparisons.
 
